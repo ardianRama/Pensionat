@@ -23,4 +23,11 @@ public class Room {
     private int baseCapacity; //1 eller 2
 
     private int maxExtraBeds; //0, 1 eller 2
+
+    public Room(int roomNumber, RoomType type, int baseCapacity, int maxExtraBeds) {
+        this.roomNumber = roomNumber;
+        this.type = type;
+        this.baseCapacity = baseCapacity;
+        this.maxExtraBeds = maxExtraBeds;
+    }
 }
