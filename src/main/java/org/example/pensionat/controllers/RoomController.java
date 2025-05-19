@@ -57,7 +57,7 @@ public class RoomController {
         return "Room with room number " + roomNumber + " added";
     }
 
-    /** addRoomPostman
+    /** Via Postman
      * {
      * 	"roomNumber": 17,
      *  "type": "SINGLEROOM",
@@ -66,26 +66,26 @@ public class RoomController {
      *  }
      */
     @PostMapping("room/addPostman")
-    public List<Room> addRoomPostman(@RequestBody Room room) {
+    public List<Room> addRoomByPostman(@RequestBody Room room) {
         roomRepo.save(room);
         log.info("Added new room with id {}", room.getId());
         return roomRepo.findAll();
     }
 
-    /** updateRoom
+    /** Via Postman
      * {
-     *     "id": 5, // ta bort om man vill att ett nytt rum skapas
-     * 	"roomNumber": 500,
+     *     "id": 1,
+     * 	   "roomNumber": 500,
      *     "type": "DOUBLEROOM",
      *     "baseCapacity": 1,
      *     "maxExtraBeds": 0
      * }
      */
-    //uppdatera eller skapa ett nytt rum via Postman
     @PutMapping("room/updatePostman")
-    public List<Room> updateRoom(@RequestBody Room room) {
+    public String updateRoom(@RequestBody Room room) {
         if (room.getId() == null) {
-            roomRepo.save(room);
+            log.warn("Room with id {} not found", room.getId());
+            return "Room with id " + room.getId() + " not found";
         } else {
             Room roomToUpdate = roomRepo.findById(room.getId()).orElse(null);
 
@@ -100,7 +100,8 @@ public class RoomController {
             }
         }
 
-        return roomRepo.findAll();
+        log.info("Updated room with id {}", room.getId());
+        return "Room with id " + room.getId() + " updated";
     }
 
 }
