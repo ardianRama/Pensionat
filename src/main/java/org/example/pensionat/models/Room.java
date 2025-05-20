@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -26,7 +28,10 @@ public class Room {
 
     private int maxExtraBeds; //0, 1 eller 2
 
-    //TODO lägg till en FK till Booking
+    //TODO ändra mappedBy till roomId
+    //se hur många bookings ett rum har
+    @OneToMany(mappedBy = "room")
+    private List<Booking> myBookings;
 
     public Room(int roomNumber, RoomType type, int baseCapacity, int maxExtraBeds) {
         this.roomNumber = roomNumber;
