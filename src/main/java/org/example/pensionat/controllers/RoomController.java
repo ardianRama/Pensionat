@@ -1,5 +1,8 @@
 package org.example.pensionat.controllers;
 
+import lombok.RequiredArgsConstructor;
+import org.example.pensionat.Service.RoomService;
+import org.example.pensionat.dtos.DetailedRoomDto;
 import org.example.pensionat.models.Room;
 import org.example.pensionat.models.RoomType;
 import org.example.pensionat.repository.RoomRepository;
@@ -10,11 +13,21 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 public class RoomController {
 
     private static final Logger log = LoggerFactory.getLogger(RoomController.class);
 
-    private final RoomRepository roomRepo;
+    //private final RoomRepository roomRepo;
+
+    private final RoomService roomService;
+
+    @RequestMapping("room")
+    public List<DetailedRoomDto> getAllRooms() {
+        return roomService.getAllDetailedRooms();
+    }
+
+    /**
 
     public RoomController(RoomRepository roomRepo) {
         this.roomRepo = roomRepo;
@@ -65,6 +78,8 @@ public class RoomController {
      *  "maxExtraBeds": 0
      *  }
      */
+
+    /**
     @PostMapping("room/addPostman")
     public List<Room> addRoomByPostman(@RequestBody Room room) {
         roomRepo.save(room);
@@ -81,6 +96,8 @@ public class RoomController {
      *     "maxExtraBeds": 0
      * }
      */
+
+    /**
     @PutMapping("room/updatePostman")
     public String updateRoom(@RequestBody Room room) {
         if (room.getId() == null) {
@@ -103,5 +120,7 @@ public class RoomController {
         log.info("Updated room with id {}", room.getId());
         return "Room with id " + room.getId() + " updated";
     }
+     */
+
 
 }

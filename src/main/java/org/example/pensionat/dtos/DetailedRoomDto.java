@@ -20,5 +20,5 @@ public class DetailedRoomDto {
     private RoomType roomType;
     private int baseCapacity;
     private int maxExtraBeds;
-    private List<Booking> myBookings;
+    private List<BookingDto> myBookings;
 }
