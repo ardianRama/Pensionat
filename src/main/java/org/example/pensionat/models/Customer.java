@@ -3,9 +3,12 @@ package org.example.pensionat.models;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -31,7 +34,8 @@ public class Customer {
 
     private String password;
 
-    //TODO lägga till en FK till Booking
+    @OneToMany(mappedBy = "customer")
+    private List<Booking> myBookings;
 
     public Customer(String name, String email, String phoneNumber, String address) {
         this.name = name;
