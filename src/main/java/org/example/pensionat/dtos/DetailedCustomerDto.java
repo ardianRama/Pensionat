@@ -1,10 +1,11 @@
 package org.example.pensionat.dtos;
 
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.example.pensionat.models.RoomType;
 
 import java.util.List;
 
@@ -12,12 +13,17 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class DetailedRoomDto {
+public class DetailedCustomerDto {
 
     private Long id;
-    private int roomNumber;
-    private RoomType roomType;
-    private int baseCapacity;
-    private int maxExtraBeds;
+
+    private String name;
+
+    private String email;
+
+    private String phoneNumber;
+
+    private String address;
+
     private List<BookingDto> myBookings;
 }

@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,6 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Builder
 public class Customer {
 
     //TODO validering
@@ -30,9 +32,11 @@ public class Customer {
 
     private String address;
 
-    private String username;
+    //avvakta
+    //private String username;
 
-    private String password;
+    //avvakta lite med password
+    //private String password;
 
     @OneToMany(mappedBy = "customer")
     private List<Booking> myBookings;

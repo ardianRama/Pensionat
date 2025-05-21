@@ -9,6 +9,7 @@ import org.example.pensionat.repository.RoomRepository;
 import org.springframework.stereotype.Service;
 
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,7 +35,7 @@ public class RoomServiceImpl implements RoomService {
                 .type(r.getRoomType())
                 .baseCapacity(r.getBaseCapacity())
                 .maxExtraBeds(r.getMaxExtraBeds())
-                .build(); // inga myBookings skapas!
+                .build(); // inga myBookings
     }
 
     @Override
@@ -85,10 +86,25 @@ public class RoomServiceImpl implements RoomService {
 
         Room existingRoom = optionalRoom.get();
 
-        existingRoom.setRoomNumber(updatedRoomDto.getRoomNumber());
-        existingRoom.setType(updatedRoomDto.getRoomType());
-        existingRoom.setBaseCapacity(updatedRoomDto.getBaseCapacity());
-        existingRoom.setMaxExtraBeds(updatedRoomDto.getMaxExtraBeds());
+        boolean hasActiveBookings = existingRoom.getMyBookings().stream()
+                .anyMatch(booking -> booking.getCheckOut().isAfter(LocalDate.now()));
+
+        if (hasActiveBookings) {
+            return "Room with id " + id + " cannot be updated because it has active bookings.";
+        }
+
+        if (updatedRoomDto.getRoomNumber() != 0) {
+            existingRoom.setRoomNumber(updatedRoomDto.getRoomNumber());
+        }
+        if (updatedRoomDto.getRoomType() != null) {
+            existingRoom.setType(updatedRoomDto.getRoomType());
+        }
+        if (updatedRoomDto.getBaseCapacity() != 0) {
+            existingRoom.setBaseCapacity(updatedRoomDto.getBaseCapacity());
+        }
+        if (updatedRoomDto.getMaxExtraBeds() != 0) {
+            existingRoom.setMaxExtraBeds(updatedRoomDto.getMaxExtraBeds());
+        }
 
         roomRepository.save(existingRoom);
         return "Room with id " + id + " was successfully updated.";

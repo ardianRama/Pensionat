@@ -25,10 +25,10 @@ public class PensionatApplication {
     public CommandLineRunner dataCustomer(CustomerRepository customerRepository, RoomRepository roomRepository,
                                           BookingRepository bookingRepository){
         return args -> {
-            Customer c1 = new Customer("Sebastian","sebbe@hotmail.com","07040407","Märsta");
-            Customer c2 = new Customer("Ignacio","Ignacio@hotmail.com","07040407","Stockholm");
-            Customer c3 = new Customer("Ardian","Ardian@hotmail.com","07040407","Solna");
-            Customer c4 = new Customer("Rama","Rama@hotmail.com","07040407","Vårby");
+            Customer c1 = new Customer("Kalle","kalle@gmail.com","0704040728","Blåbärsstigen 12");
+            Customer c2 = new Customer("Donald","donald@gmail.com","0704040768","Kullavägen 7");
+            Customer c3 = new Customer("Macron","macron@gmail.com","0704040712","Solrosgatan 3");
+            Customer c4 = new Customer("Doris","doris@gmail.com","0704040732","Måsgränd 4");
             customerRepository.save(c1);
             customerRepository.save(c2);
             customerRepository.save(c3);

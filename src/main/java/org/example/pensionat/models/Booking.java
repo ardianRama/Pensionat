@@ -8,10 +8,15 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
-@Entity @Data @NoArgsConstructor @AllArgsConstructor @Builder
+@Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Booking {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     private Long id;
 
     private LocalDate checkIn;

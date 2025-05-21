@@ -41,9 +41,9 @@ public class RoomController {
     }
 
     @PostMapping("room/add")
-    public String addRoom(@RequestBody DetailedRoomDto roomDto) {
-        log.info("Added new room with id: {}", roomDto.getId());
-        return roomService.addRoom(roomDto);
+    public String addRoom(@RequestBody DetailedRoomDto room) {
+        log.info("Added new room with id: {}", room.getId());
+        return roomService.addRoom(room);
     }
 
     @PutMapping("room/{id}/update")

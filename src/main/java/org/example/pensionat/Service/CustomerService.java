@@ -1,54 +1,24 @@
 package org.example.pensionat.Service;
 
+import org.example.pensionat.dtos.DetailedCustomerDto;
 import org.example.pensionat.models.Customer;
-import org.example.pensionat.repository.CustomerRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
-//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
-
+import java.util.List;
 import java.util.Optional;
 
-// service
-@Service
-public class CustomerService {
+public interface CustomerService {
 
-    //private static final BCryptPasswordEncoder encoder =  new BCryptPasswordEncoder();
+    public DetailedCustomerDto entityCustomerToDetailedCustomerDto(Customer customer);
 
+    public Customer dtoDetailedCustomerToEntityCustomer(DetailedCustomerDto customerDto);
 
+    public List<DetailedCustomerDto> getAllDetailedCustomer();
 
-    @Autowired
-    private CustomerRepository customerRepository;
+    public Optional<DetailedCustomerDto> getDetailedCustomerById(Long id);
 
+    public String deleteCustomer(Long id);
 
-    public boolean existsUsername(String username){
-        return customerRepository.findByUsername(username).isPresent();
-    }
+    public String addCustomer(DetailedCustomerDto customer);
 
-    public Optional<String> findByUsername(String username) {
-        return customerRepository.findByUsername(username).map(Customer::getPassword);
-    }
-
-    /*
-    public String encryptPassword(String password) {
-        return encoder.encode(password);
-    }
-
-    public boolean matchPassword(String okrypterat, String krypterat) {
-        return encoder.matches(okrypterat, krypterat);
-    }
-
-     */
-
-    public Customer registerUsername(String username, String password, String name, String email, String phoneNumber, String address) {
-        Customer c = new Customer();
-        c.setUsername(username);
-        c.setPassword(password);
-        c.setName(name);
-        c.setEmail(email);
-        c.setPhoneNumber(phoneNumber);
-        c.setAddress(address);
-        return customerRepository.save(c);
-    }
+    public String updateCustomer(Long id, DetailedCustomerDto updatedCustomerDto);
 }
