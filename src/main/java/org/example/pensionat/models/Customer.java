@@ -27,6 +27,10 @@ public class Customer {
 
     private String address;
 
+    private String username;
+
+    private String password;
+
     //TODO lägga till en FK till Booking
 
     public Customer(String name, String email, String phoneNumber, String address) {
