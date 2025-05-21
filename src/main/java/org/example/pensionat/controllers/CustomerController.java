@@ -1,8 +1,7 @@
-package org.example.pensionat.Controller;
+package org.example.pensionat.controllers;
 
 import org.example.pensionat.Service.CustomerService;
 import org.example.pensionat.models.Customer;
-import org.example.pensionat.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
