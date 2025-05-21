@@ -21,7 +21,8 @@ public class Room {
     @GeneratedValue
     private Long id;
 
-    private int roomNumber; //TODO bör vara unique
+    @Column(unique = true, nullable = false)
+    private int roomNumber;
 
     @Enumerated(EnumType.STRING)
     private RoomType type;
@@ -30,7 +31,6 @@ public class Room {
 
     private int maxExtraBeds; //0, 1 eller 2
 
-    //TODO ändra mappedBy till roomId
     //se hur många bookings ett rum har
     @OneToMany(mappedBy = "room")
     private List<Booking> myBookings;

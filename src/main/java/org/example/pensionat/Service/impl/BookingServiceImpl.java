@@ -15,4 +15,11 @@ public class BookingServiceImpl implements BookingService {
         return BookingDto.builder().checkIn(b.getCheckIn()).checkOut(b.getCheckOut()).extraBeds(b.getExtraBeds())
                 .numberOfGuests(b.getNumberOfGuests()).build();
     }
+
+    //kanske inte behövs
+    @Override
+    public Booking dtoBookingToEntityBooking(BookingDto b) {
+        return Booking.builder().checkIn(b.getCheckIn()).checkOut(b.getCheckOut()).extraBeds(b.getExtraBeds())
+                .numberOfGuests(b.getNumberOfGuests()).build();
+    }
 }
