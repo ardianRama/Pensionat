@@ -1,5 +1,6 @@
 package org.example.pensionat.Service;
 
+import org.example.pensionat.dtos.CustomerDto;
 import org.example.pensionat.dtos.DetailedCustomerDto;
 import org.example.pensionat.models.Customer;
 
@@ -9,6 +10,8 @@ import java.util.Optional;
 public interface CustomerService {
 
     public DetailedCustomerDto entityCustomerToDetailedCustomerDto(Customer customer);
+
+    public CustomerDto entityCustomerToCustomerDto(Customer customer);
 
     public Customer dtoDetailedCustomerToEntityCustomer(DetailedCustomerDto customerDto);
 

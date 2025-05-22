@@ -22,5 +22,5 @@ public class BookingDto {
 
     private int numberOfGuests;
 
-    private Customer customer;
+    //private Customer customer;
 }

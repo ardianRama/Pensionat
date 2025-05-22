@@ -35,8 +35,8 @@ public class DetailedBookingDto {
     private int numberOfGuests;
 
     @NotNull(message = "Customer is required")
-    private Customer customer;
+    private CustomerDto customer;
 
     @NotNull(message = "Room is required")
-    private Room room;
+    private RoomDto room;
 }

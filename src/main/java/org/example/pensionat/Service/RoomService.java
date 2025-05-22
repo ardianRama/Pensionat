@@ -2,6 +2,7 @@ package org.example.pensionat.Service;
 
 import org.example.pensionat.dtos.BookingDto;
 import org.example.pensionat.dtos.DetailedRoomDto;
+import org.example.pensionat.dtos.RoomDto;
 import org.example.pensionat.models.Booking;
 import org.example.pensionat.models.Room;
 
@@ -11,6 +12,8 @@ import java.util.Optional;
 public interface RoomService {
 
     public DetailedRoomDto entityRoomToDetailedRoomDto(Room room);
+
+    public RoomDto entityRoomToRoomDto(Room room);
 
     //komplett med booking, behövs nog inte
     //public Room dtoDetailedRoomToEntityRoom(DetailedRoomDto room);

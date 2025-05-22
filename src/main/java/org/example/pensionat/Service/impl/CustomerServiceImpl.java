@@ -3,6 +3,8 @@ package org.example.pensionat.Service.impl;
 import lombok.RequiredArgsConstructor;
 import org.example.pensionat.Service.BookingService;
 import org.example.pensionat.Service.CustomerService;
+import org.example.pensionat.dtos.BookingDto;
+import org.example.pensionat.dtos.CustomerDto;
 import org.example.pensionat.dtos.DetailedCustomerDto;
 import org.example.pensionat.models.Customer;
 import org.example.pensionat.models.Room;
@@ -23,9 +25,14 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public DetailedCustomerDto entityCustomerToDetailedCustomerDto(Customer c) {
         return DetailedCustomerDto.builder().id(c.getId()).name(c.getName()).email(c.getEmail())
-                .phoneNumber(c.getPhoneNumber()).address(c.getAddress()).myBookings(c.getMyBookings()
-                        .stream().map(customers -> bookingService.entityBookingToBookingDto(customers))
+               .phoneNumber(c.getPhoneNumber()).address(c.getAddress()).myBookings(c.getMyBookings()
+                       .stream().map(customers -> bookingService.entityBookingToBookingDto(customers))
                         .toList()).build();
+    }
+
+    @Override
+    public CustomerDto entityCustomerToCustomerDto(Customer c) {
+        return CustomerDto.builder().id(c.getId()).build();
     }
 
     @Override

@@ -1,0 +1,26 @@
+package org.example.pensionat.controllers;
+
+import lombok.RequiredArgsConstructor;
+import org.example.pensionat.Service.BookingService;
+import org.example.pensionat.dtos.DetailedBookingDto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+@RestController
+@RequiredArgsConstructor
+public class BookingController {
+
+    private static final Logger log = LoggerFactory.getLogger(BookingController.class);
+
+    private final BookingService bookingService;
+
+    @GetMapping("booking")
+    public List<DetailedBookingDto> getAllBookings() {
+        log.info("Get all bookings");
+        return bookingService.getAllDetailedBooking();
+    }
+}

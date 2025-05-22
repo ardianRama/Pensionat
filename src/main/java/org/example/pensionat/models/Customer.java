@@ -15,8 +15,6 @@ import java.util.List;
 @Builder
 public class Customer {
 
-    //TODO validering
-
     @Id
     @GeneratedValue
     private Long id;

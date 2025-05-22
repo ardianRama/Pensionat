@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.pensionat.Service.BookingService;
 import org.example.pensionat.Service.RoomService;
 import org.example.pensionat.dtos.DetailedRoomDto;
+import org.example.pensionat.dtos.RoomDto;
 import org.example.pensionat.models.Room;
 import org.example.pensionat.models.RoomType;
 import org.example.pensionat.repository.RoomRepository;
@@ -26,6 +27,11 @@ public class RoomServiceImpl implements RoomService {
         return DetailedRoomDto.builder().id(r.getId()).roomNumber(r.getRoomNumber()).roomType(r.getType())
                 .baseCapacity(r.getBaseCapacity()).maxExtraBeds(r.getMaxExtraBeds()).myBookings(r.getMyBookings()
                         .stream().map(bookings -> bookingService.entityBookingToBookingDto(bookings)).toList()).build();
+    }
+
+    @Override
+    public RoomDto entityRoomToRoomDto(Room r) {
+        return RoomDto.builder().id(r.getId()).build();
     }
 
     @Override
