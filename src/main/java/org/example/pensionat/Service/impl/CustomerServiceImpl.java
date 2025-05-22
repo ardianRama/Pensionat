@@ -3,15 +3,12 @@ package org.example.pensionat.Service.impl;
 import lombok.RequiredArgsConstructor;
 import org.example.pensionat.Service.BookingService;
 import org.example.pensionat.Service.CustomerService;
-import org.example.pensionat.dtos.BookingDto;
 import org.example.pensionat.dtos.CustomerDto;
 import org.example.pensionat.dtos.DetailedCustomerDto;
 import org.example.pensionat.models.Customer;
-import org.example.pensionat.models.Room;
 import org.example.pensionat.repository.CustomerRepository;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
