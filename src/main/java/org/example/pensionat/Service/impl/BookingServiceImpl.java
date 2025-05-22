@@ -18,8 +18,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BookingServiceImpl implements BookingService {
 
-    private final CustomerService customerService;
-    private final RoomService roomService;
+    //private final CustomerService customerService;
+    //private final RoomService roomService;
     private final BookingRepository bookingRepository;
 
     @Override
