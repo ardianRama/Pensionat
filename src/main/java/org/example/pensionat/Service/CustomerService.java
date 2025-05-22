@@ -18,7 +18,7 @@ public interface CustomerService {
 
     public String deleteCustomer(Long id);
 
-    public String addCustomer(DetailedCustomerDto customer);
+    public String addCustomer(DetailedCustomerDto customerdto);
 
     public String updateCustomer(Long id, DetailedCustomerDto updatedCustomerDto);
 }

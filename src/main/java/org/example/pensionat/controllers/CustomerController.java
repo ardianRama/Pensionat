@@ -44,7 +44,7 @@ public class CustomerController {
 
     @PostMapping("customer/add")
     public String addRoom (@RequestBody DetailedCustomerDto customer) {
-        log.info("Added new room with id: {}", customer.getId());
+        log.info("Added new customer with id: {}", customer.getId());
         return customerService.addCustomer(customer);
     }
 

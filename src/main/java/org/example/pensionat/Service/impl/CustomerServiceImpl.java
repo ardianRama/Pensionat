@@ -63,14 +63,14 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public String addCustomer(DetailedCustomerDto customerDto) {
-        if(customerRepository.existsById(customerDto.getId())) {
-            return "Customer with id " + customerDto.getId() + " already exists.";
+        if (customerRepository.existsByEmail(customerDto.getEmail())) {
+            return "Customer with email " + customerDto.getEmail() + " already exists.";
         }
-
         Customer customer = dtoDetailedCustomerToEntityCustomer(customerDto);
         customerRepository.save(customer);
         return "Customer with id " + customer.getId() + " has been created.";
     }
+
 
     @Override
     public String updateCustomer(Long id, DetailedCustomerDto updatedCustomerDto) {
