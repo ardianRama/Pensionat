@@ -43,8 +43,8 @@ public class PensionatApplication {
             roomRepository.save(r3);
             roomRepository.save(r4);
 
-            Booking b1 = new Booking(LocalDate.of(2025,05,19),LocalDate.of(2025,05,22),1,1,c1,r1);
-            Booking b2 = new Booking(LocalDate.of(2025,05,19),LocalDate.of(2025,05,20),1,1,c2,r4);
+            Booking b1 = new Booking(LocalDate.of(2025,05,19),LocalDate.of(2025,05,22),0,1,c1,r1);
+            Booking b2 = new Booking(LocalDate.of(2025,05,19),LocalDate.of(2025,05,20),2,4,c2,r4);
             bookingRepository.save(b1);
             bookingRepository.save(b2);
 
