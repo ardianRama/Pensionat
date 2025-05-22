@@ -1,5 +1,6 @@
 package org.example.pensionat.controllers;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.pensionat.Service.RoomService;
 import org.example.pensionat.dtos.DetailedRoomDto;
@@ -41,13 +42,13 @@ public class RoomController {
     }
 
     @PostMapping("room/add")
-    public String addRoom(@RequestBody DetailedRoomDto room) {
+    public String addRoom(@RequestBody @Valid DetailedRoomDto room) {
         log.info("Added new room with id: {}", room.getId());
         return roomService.addRoom(room);
     }
 
     @PutMapping("room/{id}/update")
-    public String updateRoom(@PathVariable Long id, @RequestBody DetailedRoomDto roomDto) {
+    public String updateRoom(@PathVariable Long id, @RequestBody DetailedRoomDto roomDto) { //ingen @Valid behövs
         log.info("Update room with id: {}", id);
         return roomService.updateRoom(id, roomDto);
     }

@@ -5,6 +5,7 @@ import org.example.pensionat.Service.BookingService;
 import org.example.pensionat.Service.RoomService;
 import org.example.pensionat.dtos.DetailedRoomDto;
 import org.example.pensionat.models.Room;
+import org.example.pensionat.models.RoomType;
 import org.example.pensionat.repository.RoomRepository;
 import org.springframework.stereotype.Service;
 
@@ -71,6 +72,11 @@ public class RoomServiceImpl implements RoomService {
             return "Room with number " + roomDto.getRoomNumber() + " already exists.";
         }
 
+        String validationError = validateRoomData(roomDto);
+        if (validationError != null) {
+            return validationError;
+        }
+
         Room room = dtoDetailedRoomToEntityRoom(roomDto);
         roomRepository.save(room);
         return "Room with number " + room.getRoomNumber() + " was successfully added.";
@@ -87,10 +93,18 @@ public class RoomServiceImpl implements RoomService {
         Room existingRoom = optionalRoom.get();
 
         boolean hasActiveBookings = existingRoom.getMyBookings().stream()
-                .anyMatch(booking -> booking.getCheckOut().isAfter(LocalDate.now()));
+                .anyMatch(booking ->
+                        booking.getCheckIn().isBefore(LocalDate.now().plusDays(1)) &&
+                                booking.getCheckOut().isAfter(LocalDate.now().minusDays(1))
+                );
 
         if (hasActiveBookings) {
             return "Room with id " + id + " cannot be updated because it has active bookings.";
+        }
+
+        String validationError = validateRoomData(updatedRoomDto);
+        if (validationError != null) {
+            return validationError;
         }
 
         if (updatedRoomDto.getRoomNumber() != 0) {
@@ -109,4 +123,32 @@ public class RoomServiceImpl implements RoomService {
         roomRepository.save(existingRoom);
         return "Room with id " + id + " was successfully updated.";
     }
+
+    @Override
+    public String validateRoomData(DetailedRoomDto roomDto) {
+        RoomType type = roomDto.getRoomType();
+        int extraBeds = roomDto.getMaxExtraBeds();
+        int baseCapacity = roomDto.getBaseCapacity();
+
+        if (type == RoomType.SINGLEROOM) {
+            if (extraBeds != 0) {
+                return "Single rooms cannot have extra beds.";
+            }
+            if (baseCapacity != 1) {
+                return "Single rooms must have a base capacity of 1.";
+            }
+        }
+
+        if (type == RoomType.DOUBLEROOM) {
+            if (extraBeds < 0 || extraBeds > 2) {
+                return "Double rooms can only have 0 to 2 extra beds.";
+            }
+            if (baseCapacity != 2) {
+                return "Double rooms must have a base capacity of 2.";
+            }
+        }
+
+        return null;
+    }
+
 }

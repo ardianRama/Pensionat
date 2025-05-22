@@ -27,4 +27,6 @@ public interface RoomService {
     public String addRoom(DetailedRoomDto room);
 
     public String updateRoom(Long id, DetailedRoomDto updatedRoomDto);
+
+    public String validateRoomData(DetailedRoomDto roomDto);
 }
