@@ -8,5 +8,5 @@ public interface BookingService {
     public BookingDto entityBookingToBookingDto (Booking booking);
 
     //kanske inte behövs
-    public Booking dtoBookingToEntityBooking(BookingDto booking);
+    //public Booking dtoBookingToEntityBooking(BookingDto booking);
 }

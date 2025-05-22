@@ -15,8 +15,6 @@ import java.util.List;
 @Builder
 public class Room {
 
-    //TODO validering
-
     @Id
     @GeneratedValue
     private Long id;

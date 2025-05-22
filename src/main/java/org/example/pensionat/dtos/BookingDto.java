@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.example.pensionat.models.Customer;
 
 import java.time.LocalDate;
 
@@ -20,4 +21,6 @@ public class BookingDto {
     private int extraBeds;
 
     private int numberOfGuests;
+
+    private Customer customer;
 }

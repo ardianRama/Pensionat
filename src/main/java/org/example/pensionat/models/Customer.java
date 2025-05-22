@@ -1,9 +1,6 @@
 package org.example.pensionat.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,6 +23,7 @@ public class Customer {
 
     private String name;
 
+    @Column(unique = true, nullable = false)
     private String email;
 
     private String phoneNumber;

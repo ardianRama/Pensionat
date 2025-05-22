@@ -1,5 +1,6 @@
 package org.example.pensionat.controllers;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.pensionat.Service.CustomerService;
 import org.example.pensionat.dtos.DetailedCustomerDto;
@@ -43,12 +44,12 @@ public class CustomerController {
     }
 
     @PostMapping("customer/add")
-    public String addRoom (@RequestBody DetailedCustomerDto customer) {
+    public String addCustomer (@RequestBody @Valid DetailedCustomerDto customer) {
         log.info("Added new customer with id: {}", customer.getId());
         return customerService.addCustomer(customer);
     }
 
-    @PutMapping("customer/{id}/update")
+    @PutMapping("customer/{id}/update") //behövs ingen @Valid
     public String updateCustomer(@PathVariable Long id, @RequestBody DetailedCustomerDto customerDto) {
         log.info("Update customer with id: {}", id);
         return customerService.updateCustomer(id, customerDto);

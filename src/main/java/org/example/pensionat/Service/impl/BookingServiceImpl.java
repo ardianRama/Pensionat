@@ -17,9 +17,9 @@ public class BookingServiceImpl implements BookingService {
     }
 
     //kanske inte behövs
-    @Override
-    public Booking dtoBookingToEntityBooking(BookingDto b) {
-        return Booking.builder().checkIn(b.getCheckIn()).checkOut(b.getCheckOut()).extraBeds(b.getExtraBeds())
-                .numberOfGuests(b.getNumberOfGuests()).build();
-    }
+    //@Override
+    //public Booking dtoBookingToEntityBooking(BookingDto b) {
+      //  return Booking.builder().checkIn(b.getCheckIn()).checkOut(b.getCheckOut()).extraBeds(b.getExtraBeds())
+        //        .numberOfGuests(b.getNumberOfGuests()).build();
+    //}
 }
