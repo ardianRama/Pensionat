@@ -16,6 +16,7 @@ import org.example.pensionat.repository.CustomerRepository;
 import org.example.pensionat.repository.RoomRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -69,12 +70,27 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public String addBooking(DetailedBookingDto booking) {
-        Customer customer = customerRepository.findById(booking.getCustomer().getId()).get();
-        Room room = roomRepository.findById(booking.getRoom().getId()).get();
-        bookingRepository.save(dtoDetailedBookingToEntityBooking(booking, customer, room));
-        return "Booking added successfully";
+    public String addBooking(DetailedBookingDto bookingDto) {
+        Long roomId = bookingDto.getRoom().getId();
+        LocalDate checkIn = bookingDto.getCheckIn();
+        LocalDate checkOut = bookingDto.getCheckOut();
+
+        List<Booking> overlappingBookings = bookingRepository.findOverlappingBookings(roomId, checkIn, checkOut);
+        if (!overlappingBookings.isEmpty()) {
+            return "The room is already booked for the selected dates.";
+        }
+
+        Customer customer = customerRepository.findById(bookingDto.getCustomer().getId())
+                .orElseThrow(() -> new IllegalArgumentException("Customer not found"));
+        Room room = roomRepository.findById(bookingDto.getRoom().getId())
+                .orElseThrow(() -> new IllegalArgumentException("Room not found"));
+
+        Booking booking = dtoDetailedBookingToEntityBooking(bookingDto, customer, room);
+
+        bookingRepository.save(booking);
+        return "Booking added successfully.";
     }
+
 
     //kanske inte behövs
     //@Override

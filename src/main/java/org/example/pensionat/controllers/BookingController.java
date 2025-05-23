@@ -1,5 +1,6 @@
 package org.example.pensionat.controllers;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.pensionat.Service.BookingService;
 import org.example.pensionat.dtos.DetailedBookingDto;
@@ -30,7 +31,7 @@ public class BookingController {
     }
 
     @PostMapping("booking/add")
-    public String addBooking(@RequestBody DetailedBookingDto booking) {
+    public String addBooking(@RequestBody @Valid DetailedBookingDto booking) {
         log.info("Added booking {}", booking);
         return bookingService.addBooking(booking);
     }
