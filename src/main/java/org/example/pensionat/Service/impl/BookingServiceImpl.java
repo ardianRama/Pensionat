@@ -1,5 +1,6 @@
 package org.example.pensionat.Service.impl;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.example.pensionat.Service.BookingService;
 import org.example.pensionat.Service.CustomerService;
@@ -89,6 +90,16 @@ public class BookingServiceImpl implements BookingService {
 
         bookingRepository.save(booking);
         return "Booking added successfully.";
+    }
+
+    @Override
+    public String cancelBooking(Long bookingId) {
+        if (!bookingRepository.existsById(bookingId)) {
+            return "Booking with id " + bookingId + " does not exist";
+        }
+
+        bookingRepository.deleteById(bookingId);
+        return "Booking cancelled successfully";
     }
 
 
