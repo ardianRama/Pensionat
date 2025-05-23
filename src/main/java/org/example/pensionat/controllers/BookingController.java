@@ -5,8 +5,7 @@ import org.example.pensionat.Service.BookingService;
 import org.example.pensionat.dtos.DetailedBookingDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,4 +22,17 @@ public class BookingController {
         log.info("Get all bookings");
         return bookingService.getAllDetailedBooking();
     }
+
+    @GetMapping("booking/{id}")
+    public DetailedBookingDto getBookingById(@PathVariable Long id) {
+        log.info("Get booking with id {}", id);
+        return bookingService.getDetailedBookingById(id);
+    }
+
+    @PostMapping("booking/add")
+    public String addBooking(@RequestBody DetailedBookingDto booking) {
+        log.info("Added booking {}", booking);
+        return bookingService.addBooking(booking);
+    }
+
 }

@@ -9,7 +9,11 @@ import org.example.pensionat.dtos.CustomerDto;
 import org.example.pensionat.dtos.DetailedBookingDto;
 import org.example.pensionat.dtos.RoomDto;
 import org.example.pensionat.models.Booking;
+import org.example.pensionat.models.Customer;
+import org.example.pensionat.models.Room;
 import org.example.pensionat.repository.BookingRepository;
+import org.example.pensionat.repository.CustomerRepository;
+import org.example.pensionat.repository.RoomRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +25,8 @@ public class BookingServiceImpl implements BookingService {
     //private final CustomerService customerService; //orsakar cirkulär referens
     //private final RoomService roomService;
     private final BookingRepository bookingRepository;
+    private final CustomerRepository customerRepository;
+    private final RoomRepository roomRepository;
 
     @Override
     public BookingDto entityBookingToBookingDto(Booking b) {
@@ -44,8 +50,30 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    public Booking dtoDetailedBookingToEntityBooking(DetailedBookingDto b, Customer c, Room r) {
+        return Booking.builder().id(b.getId()).checkIn(b.getCheckIn()).checkOut(b.getCheckOut())
+                .extraBeds(b.getExtraBeds()).numberOfGuests(b.getNumberOfGuests())
+                .customer(c).room(r).build();
+    }
+
+    @Override
     public List<DetailedBookingDto> getAllDetailedBooking() {
         return bookingRepository.findAll().stream().map(booking -> entityBookingToDetailedBookingDto(booking)).toList();
+    }
+
+    @Override
+    public DetailedBookingDto getDetailedBookingById(Long id) {
+        Booking booking = bookingRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Booking not found with id: " + id));
+        return entityBookingToDetailedBookingDto(booking);
+    }
+
+    @Override
+    public String addBooking(DetailedBookingDto booking) {
+        Customer customer = customerRepository.findById(booking.getCustomer().getId()).get();
+        Room room = roomRepository.findById(booking.getRoom().getId()).get();
+        bookingRepository.save(dtoDetailedBookingToEntityBooking(booking, customer, room));
+        return "Booking added successfully";
     }
 
     //kanske inte behövs
