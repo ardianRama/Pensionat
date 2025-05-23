@@ -24,6 +24,8 @@ public interface BookingService {
 
     public String cancelBooking(Long bookingId);
 
+    public String updateBooking(Long id, DetailedBookingDto updatedBookingDto);
+
 
     //kanske inte behövs
     //public Booking dtoBookingToEntityBooking(BookingDto booking);

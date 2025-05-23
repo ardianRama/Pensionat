@@ -102,6 +102,45 @@ public class BookingServiceImpl implements BookingService {
         return "Booking cancelled successfully";
     }
 
+    //Funkar inte helt ännu
+    @Override
+    public String updateBooking(Long id, DetailedBookingDto updatedBookingDto) {
+        Booking existingBooking = bookingRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Booking not found with id: " + id));
+
+        // Kontrollera att kunden inte ändras
+        if (!existingBooking.getCustomer().getId().equals(updatedBookingDto.getCustomer().getId())) {
+            throw new RuntimeException("Customer cannot be changed on an existing booking.");
+        }
+
+        // Kontrollera att rummet är ledigt under det nya datumintervallet
+        List<Booking> overlapping = bookingRepository.findOverlappingBookings(
+                updatedBookingDto.getRoom().getId(),
+                updatedBookingDto.getCheckIn(),
+                updatedBookingDto.getCheckOut()
+        ).stream().filter(b -> !b.getId().equals(id)).toList();
+
+        if (!overlapping.isEmpty()) {
+            throw new RuntimeException("Room is already booked during the selected dates.");
+        }
+
+        // Hämta nytt rum (om det bytts)
+        Room room = roomRepository.findById(updatedBookingDto.getRoom().getId())
+                .orElseThrow(() -> new RuntimeException("Room not found"));
+
+        // Uppdatera tillåtna fält
+        existingBooking.setCheckIn(updatedBookingDto.getCheckIn());
+        existingBooking.setCheckOut(updatedBookingDto.getCheckOut());
+        existingBooking.setExtraBeds(updatedBookingDto.getExtraBeds());
+        existingBooking.setNumberOfGuests(updatedBookingDto.getNumberOfGuests());
+        existingBooking.setRoom(room);
+
+        bookingRepository.save(existingBooking);
+        return "Booking updated successfully";
+    }
+
+
+
 
     //kanske inte behövs
     //@Override

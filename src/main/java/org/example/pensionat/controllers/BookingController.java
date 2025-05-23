@@ -6,6 +6,7 @@ import org.example.pensionat.Service.BookingService;
 import org.example.pensionat.dtos.DetailedBookingDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -41,5 +42,12 @@ public class BookingController {
         log.info("Cancel booking with ID {}", id);
         return bookingService.cancelBooking(id);
     }
+
+    @PutMapping("/booking/{id}/update")
+    public ResponseEntity<String> updateBooking(@PathVariable Long id,
+                                                @RequestBody DetailedBookingDto bookingDto) {
+        return ResponseEntity.ok(bookingService.updateBooking(id, bookingDto));
+    }
+
 
 }
