@@ -2,6 +2,7 @@ package org.example.pensionat.Service;
 
 import org.example.pensionat.dtos.BookingDto;
 import org.example.pensionat.dtos.DetailedRoomDto;
+import org.example.pensionat.dtos.RoomAvailableStat;
 import org.example.pensionat.dtos.RoomDto;
 import org.example.pensionat.models.Booking;
 import org.example.pensionat.models.Room;
@@ -15,6 +16,8 @@ public interface RoomService {
     public DetailedRoomDto entityRoomToDetailedRoomDto(Room room);
 
     public RoomDto entityRoomToRoomDto(Room room);
+
+    public RoomAvailableStat entityRoomToRoomAvailableStatDto(Room room);
 
     //komplett med booking, behövs nog inte
     //public Room dtoDetailedRoomToEntityRoom(DetailedRoomDto room);
@@ -34,5 +37,5 @@ public interface RoomService {
 
     public String validateRoomData(DetailedRoomDto roomDto);
 
-    public List<DetailedRoomDto> searchAvailableRooms(LocalDate checkIn, LocalDate checkOut, int numberOfGuests);
+    public List<RoomAvailableStat> searchAvailableRooms(LocalDate checkIn, LocalDate checkOut, int numberOfGuests);
 }

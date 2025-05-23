@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.pensionat.Service.RoomService;
 import org.example.pensionat.dtos.DetailedRoomDto;
+import org.example.pensionat.dtos.RoomAvailableStat;
 import org.example.pensionat.dtos.RoomDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,9 +59,9 @@ public class RoomController {
 
     //http://localhost:8080/room/search?checkIn=2025-05-20&checkOut=2025-05-28&guests=4
     @GetMapping("room/search")
-    public List<DetailedRoomDto> searchAvailableRooms(@RequestParam("checkIn") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkIn,
-                                              @RequestParam("checkOut") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkOut,
-                                              @RequestParam("guests") int numberOfGuests) {
+    public List<RoomAvailableStat> searchAvailableRooms(@RequestParam("checkIn") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkIn,
+                                                        @RequestParam("checkOut") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkOut,
+                                                        @RequestParam("guests") int numberOfGuests) {
         return roomService.searchAvailableRooms(checkIn, checkOut, numberOfGuests);
     }
 

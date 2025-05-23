@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.pensionat.Service.BookingService;
 import org.example.pensionat.Service.RoomService;
 import org.example.pensionat.dtos.DetailedRoomDto;
+import org.example.pensionat.dtos.RoomAvailableStat;
 import org.example.pensionat.dtos.RoomDto;
 import org.example.pensionat.models.Room;
 import org.example.pensionat.models.RoomType;
@@ -32,6 +33,12 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public RoomDto entityRoomToRoomDto(Room r) {
         return RoomDto.builder().id(r.getId()).build();
+    }
+
+    @Override
+    public RoomAvailableStat entityRoomToRoomAvailableStatDto(Room r) {
+        return RoomAvailableStat.builder().roomNumber(r.getRoomNumber()).roomType(r.getType())
+                .baseCapacity(r.getBaseCapacity()).maxExtraBeds(r.getMaxExtraBeds()).build();
     }
 
     @Override
@@ -158,11 +165,11 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public List<DetailedRoomDto> searchAvailableRooms(LocalDate checkIn, LocalDate checkOut, int numberOfGuests) {
+    public List<RoomAvailableStat> searchAvailableRooms(LocalDate checkIn, LocalDate checkOut, int numberOfGuests) {
         List<Room> rooms = roomRepository.findRoomsAvailableInPeriod(checkIn, checkOut);
         return rooms.stream()
                 .filter(r -> (r.getBaseCapacity() + r.getMaxExtraBeds()) >= numberOfGuests)
-                .map(this::entityRoomToDetailedRoomDto)
+                .map(this::entityRoomToRoomAvailableStatDto)
                 .toList();
     }
 
