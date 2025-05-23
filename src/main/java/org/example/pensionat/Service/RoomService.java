@@ -6,6 +6,7 @@ import org.example.pensionat.dtos.RoomDto;
 import org.example.pensionat.models.Booking;
 import org.example.pensionat.models.Room;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,4 +33,6 @@ public interface RoomService {
     public String updateRoom(Long id, DetailedRoomDto updatedRoomDto);
 
     public String validateRoomData(DetailedRoomDto roomDto);
+
+    public List<DetailedRoomDto> searchAvailableRooms(LocalDate checkIn, LocalDate checkOut, int numberOfGuests);
 }

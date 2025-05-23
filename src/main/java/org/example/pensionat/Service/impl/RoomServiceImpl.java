@@ -157,4 +157,13 @@ public class RoomServiceImpl implements RoomService {
         return null;
     }
 
+    @Override
+    public List<DetailedRoomDto> searchAvailableRooms(LocalDate checkIn, LocalDate checkOut, int numberOfGuests) {
+        List<Room> rooms = roomRepository.findRoomsAvailableInPeriod(checkIn, checkOut);
+        return rooms.stream()
+                .filter(r -> (r.getBaseCapacity() + r.getMaxExtraBeds()) >= numberOfGuests)
+                .map(this::entityRoomToDetailedRoomDto)
+                .toList();
+    }
+
 }
