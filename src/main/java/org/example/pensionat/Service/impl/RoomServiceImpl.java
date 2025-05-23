@@ -105,21 +105,17 @@ public class RoomServiceImpl implements RoomService {
 
         Room existingRoom = optionalRoom.get();
 
-        boolean hasActiveBookings = existingRoom.getMyBookings().stream()
-                .anyMatch(booking ->
-                        booking.getCheckIn().isBefore(LocalDate.now().plusDays(1)) &&
-                                booking.getCheckOut().isAfter(LocalDate.now().minusDays(1))
-                );
+        boolean hasFutureBookings = existingRoom.getMyBookings().stream()
+                .anyMatch(booking -> booking.getCheckOut().isAfter(LocalDate.now()));
 
-        if (hasActiveBookings) {
-            return "Room with id " + id + " cannot be updated because it has active bookings.";
+        if (hasFutureBookings) {
+            return "Room with id " + id + " cannot be updated because it has future bookings.";
         }
 
         String validationError = validateRoomData(updatedRoomDto);
         if (validationError != null) {
             return validationError;
         }
-
         if (updatedRoomDto.getRoomNumber() != 0) {
             existingRoom.setRoomNumber(updatedRoomDto.getRoomNumber());
         }
