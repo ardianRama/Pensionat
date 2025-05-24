@@ -49,5 +49,4 @@ public class BookingController {
         return ResponseEntity.ok(bookingService.updateBooking(id, bookingDto));
     }
 
-
 }
