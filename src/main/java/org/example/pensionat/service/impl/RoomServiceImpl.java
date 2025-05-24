@@ -1,8 +1,8 @@
-package org.example.pensionat.Service.impl;
+package org.example.pensionat.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.example.pensionat.Service.BookingService;
-import org.example.pensionat.Service.RoomService;
+import org.example.pensionat.service.BookingService;
+import org.example.pensionat.service.RoomService;
 import org.example.pensionat.dtos.DetailedRoomDto;
 import org.example.pensionat.dtos.RoomAvailableStat;
 import org.example.pensionat.dtos.RoomDto;

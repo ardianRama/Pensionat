@@ -2,15 +2,11 @@ package org.example.pensionat.controllers;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.example.pensionat.Service.CustomerService;
+import org.example.pensionat.service.CustomerService;
 import org.example.pensionat.dtos.DetailedCustomerDto;
-import org.example.pensionat.models.Customer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

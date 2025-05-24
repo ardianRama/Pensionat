@@ -1,10 +1,8 @@
-package org.example.pensionat.Service;
+package org.example.pensionat.service;
 
-import org.example.pensionat.dtos.BookingDto;
 import org.example.pensionat.dtos.DetailedRoomDto;
 import org.example.pensionat.dtos.RoomAvailableStat;
 import org.example.pensionat.dtos.RoomDto;
-import org.example.pensionat.models.Booking;
 import org.example.pensionat.models.Room;
 
 import java.time.LocalDate;

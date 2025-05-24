@@ -1,10 +1,7 @@
-package org.example.pensionat.Service.impl;
+package org.example.pensionat.service.impl;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.example.pensionat.Service.BookingService;
-import org.example.pensionat.Service.CustomerService;
-import org.example.pensionat.Service.RoomService;
+import org.example.pensionat.service.BookingService;
 import org.example.pensionat.dtos.BookingDto;
 import org.example.pensionat.dtos.CustomerDto;
 import org.example.pensionat.dtos.DetailedBookingDto;
@@ -48,7 +45,7 @@ public class BookingServiceImpl implements BookingService {
     public DetailedBookingDto entityBookingToDetailedBookingDto(Booking b) {
         return DetailedBookingDto.builder().id(b.getId()).checkIn(b.getCheckIn()).checkOut(b.getCheckOut())
                 .extraBeds(b.getExtraBeds()).numberOfGuests(b.getNumberOfGuests())
-                .customer(new CustomerDto(b.getId())).room(new RoomDto(b.getId())).build();
+                .customer(new CustomerDto(b.getCustomer().getId())).room(new RoomDto(b.getRoom().getId())).build();
     }
 
     @Override

@@ -2,10 +2,9 @@ package org.example.pensionat.controllers;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.example.pensionat.Service.RoomService;
+import org.example.pensionat.service.RoomService;
 import org.example.pensionat.dtos.DetailedRoomDto;
 import org.example.pensionat.dtos.RoomAvailableStat;
-import org.example.pensionat.dtos.RoomDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.format.annotation.DateTimeFormat;

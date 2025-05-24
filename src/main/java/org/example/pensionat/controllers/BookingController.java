@@ -2,7 +2,7 @@ package org.example.pensionat.controllers;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.example.pensionat.Service.BookingService;
+import org.example.pensionat.service.BookingService;
 import org.example.pensionat.dtos.DetailedBookingDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

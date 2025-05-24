@@ -1,4 +1,4 @@
-package org.example.pensionat.Service;
+package org.example.pensionat.service;
 
 import org.example.pensionat.dtos.BookingDto;
 import org.example.pensionat.dtos.DetailedBookingDto;
