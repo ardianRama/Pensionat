@@ -1,67 +1,81 @@
 package org.example.pensionat.service.impl;
 
-import org.example.pensionat.dtos.BookingDto;
 import org.example.pensionat.dtos.DetailedRoomDto;
-import org.example.pensionat.dtos.RoomAvailableStat;
-import org.example.pensionat.dtos.RoomDto;
-import org.example.pensionat.models.Booking;
-import org.example.pensionat.models.Customer;
 import org.example.pensionat.models.Room;
 import org.example.pensionat.models.RoomType;
 import org.example.pensionat.repository.RoomRepository;
 import org.example.pensionat.service.BookingService;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.context.SpringBootTest;
 
-import java.time.LocalDate;
-import java.time.Month;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.when;
 
-class RoomServiceImplTest {
+@ExtendWith(MockitoExtension.class)
+@SpringBootTest
+public class RoomServiceImplTest {
+
     @Mock
-    BookingService bookingService;
+    private RoomRepository roomRepository;
+
     @Mock
-    RoomRepository roomRepository;
+    private BookingService bookingService;
+
     @InjectMocks
-    RoomServiceImpl roomServiceImpl;
+    private RoomServiceImpl roomServiceImpl = new RoomServiceImpl(bookingService, roomRepository); //kanske måste manuellt injekta
 
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
+    private long id = 1L;
+
+    private int roomNumber = 105;
+
+    private RoomType roomType = RoomType.SINGLEROOM;
+
+    private int baseCapacity = 1;
+
+    private int maxExtraBeds = 0;
+
+    Room room = new Room(id, roomNumber, roomType, baseCapacity, maxExtraBeds, new ArrayList<>());
+
+    DetailedRoomDto detailedRoomDto = DetailedRoomDto.builder().id(id).roomNumber(roomNumber)
+            .roomType(roomType).baseCapacity(baseCapacity).maxExtraBeds(maxExtraBeds).build();
+
+    @Test
+    void entityRoomToDetailedRoomDto() {
+       DetailedRoomDto actual = roomServiceImpl.entityRoomToDetailedRoomDto(room);
+
+        assertEquals(actual.getId(), detailedRoomDto.getId(), "Id should be the same");
+        assertEquals(actual.getRoomNumber(), detailedRoomDto.getRoomNumber(), "Room number should be the same");
+        assertEquals(actual.getRoomType(), detailedRoomDto.getRoomType(), "Room type should be the same");
+        assertEquals(actual.getBaseCapacity(), detailedRoomDto.getBaseCapacity(), "Base capacity should be the same");
+        assertEquals(actual.getMaxExtraBeds(), detailedRoomDto.getMaxExtraBeds(), "Max extra beds should be the same");
     }
 
     @Test
-    void testEntityRoomToDetailedRoomDto() {
-        when(bookingService.entityBookingToBookingDto(any(Booking.class))).thenReturn(new BookingDto(LocalDate.of(2025, Month.MAY, 24), LocalDate.of(2025, Month.MAY, 24), 0, 0));
+    void detailedRoomToEntityRoom() {
+        Room actual = roomServiceImpl.dtoDetailedRoomToEntityRoom(detailedRoomDto);
 
-        DetailedRoomDto result = roomServiceImpl.entityRoomToDetailedRoomDto(new Room(Long.valueOf(1), 0, RoomType.SINGLEROOM, 0, 0, List.of(new Booking(Long.valueOf(1), LocalDate.of(2025, Month.MAY, 24), LocalDate.of(2025, Month.MAY, 24), 0, 0, new Customer(Long.valueOf(1), "name", "email", "phoneNumber", "address", List.of()), null))));
-        Assertions.assertEquals(new DetailedRoomDto(Long.valueOf(1), 0, RoomType.SINGLEROOM, 0, 0, List.of(new BookingDto(LocalDate.of(2025, Month.MAY, 24), LocalDate.of(2025, Month.MAY, 24), 0, 0))), result);
+        assertEquals(actual.getId(), detailedRoomDto.getId(), "Id should be the same");
+        assertEquals(actual.getRoomNumber(), detailedRoomDto.getRoomNumber(), "Room number should be the same");
+        assertEquals(actual.getType(), detailedRoomDto.getRoomType(), "Room type should be the same");
+        assertEquals(actual.getBaseCapacity(), detailedRoomDto.getBaseCapacity(), "Base capacity should be the same");
+        assertEquals(actual.getMaxExtraBeds(), detailedRoomDto.getMaxExtraBeds(), "Max extra beds should be the same");
     }
 
     @Test
-    void testEntityRoomToRoomDto() {
-        RoomDto result = roomServiceImpl.entityRoomToRoomDto(new Room(Long.valueOf(1), 0, RoomType.SINGLEROOM, 0, 0, List.of(new Booking(Long.valueOf(1), LocalDate.of(2025, Month.MAY, 24), LocalDate.of(2025, Month.MAY, 24), 0, 0, new Customer(Long.valueOf(1), "name", "email", "phoneNumber", "address", List.of()), null))));
-        Assertions.assertEquals(new RoomDto(Long.valueOf(1)), result);
+    void getAllRooms() {
+        when(roomRepository.findAll()).thenReturn(Arrays.asList(room));
+        RoomServiceImpl service2 = new RoomServiceImpl(bookingService, roomRepository);
+        List<DetailedRoomDto> allRooms = service2.getAllDetailedRooms();
+
+        assertTrue(allRooms.size() == 1);
     }
-
-    @Test
-    void testEntityRoomToRoomAvailableStatDto() {
-        RoomAvailableStat result = roomServiceImpl.entityRoomToRoomAvailableStatDto(new Room(Long.valueOf(1), 0, RoomType.SINGLEROOM, 0, 0, List.of(new Booking(Long.valueOf(1), LocalDate.of(2025, Month.MAY, 24), LocalDate.of(2025, Month.MAY, 24), 0, 0, new Customer(Long.valueOf(1), "name", "email", "phoneNumber", "address", List.of()), null))));
-        Assertions.assertEquals(new RoomAvailableStat(0, RoomType.SINGLEROOM, 0, 0), result);
-    }
-
-    @Test
-    void testDtoDetailedRoomToEntityRoom() {
-        Room result = roomServiceImpl.dtoDetailedRoomToEntityRoom(new DetailedRoomDto(Long.valueOf(1), 0, RoomType.SINGLEROOM, 0, 0, List.of(new BookingDto(LocalDate.of(2025, Month.MAY, 24), LocalDate.of(2025, Month.MAY, 24), 0, 0))));
-        Assertions.assertEquals(new Room(Long.valueOf(1), 0, RoomType.SINGLEROOM, 0, 0, List.of(new Booking(Long.valueOf(1), LocalDate.of(2025, Month.MAY, 24), LocalDate.of(2025, Month.MAY, 24), 0, 0, new Customer(Long.valueOf(1), "name", "email", "phoneNumber", "address", List.of()), null))), result);
-    }
-
-
 }

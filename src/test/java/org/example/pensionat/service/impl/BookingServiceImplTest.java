@@ -4,6 +4,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import org.example.pensionat.dtos.CustomerDto;
 import org.example.pensionat.dtos.DetailedBookingDto;
+import org.example.pensionat.dtos.DetailedCustomerDto;
 import org.example.pensionat.dtos.RoomDto;
 import org.example.pensionat.models.Booking;
 import org.example.pensionat.models.Customer;
@@ -21,8 +22,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
@@ -84,6 +88,15 @@ class BookingServiceImplTest {
         assertEquals(booking.getId(), actual.getId(), "Should be the same booking id");
         assertEquals(customer.getId(), actual.getCustomer().getId(), "Should be the same customer id");
         assertEquals(room.getId(), actual.getRoom().getId(), "Should be the same room id");
+    }
+
+    @Test
+    void getAllBookings() {
+        when(bookingRepository.findAll()).thenReturn(Arrays.asList(booking));
+        BookingServiceImpl service2 = new BookingServiceImpl(bookingRepository, customerRepository, roomRepository);
+        List<DetailedBookingDto> allBookings = service2.getAllDetailedBooking();
+
+        assertTrue(allBookings.size() == 1);
     }
 
 }
