@@ -102,18 +102,19 @@ public class BookingServiceImpl implements BookingService {
         return "Booking cancelled successfully";
     }
 
-    //Funkar inte helt ännu
     @Override
     public String updateBooking(Long id, DetailedBookingDto updatedBookingDto) {
+
+        //hitta bokning som ska uppdateras
         Booking existingBooking = bookingRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Booking not found with id: " + id));
 
-        // Kontrollera att kunden inte ändras
+        //så att kunden inte byts ut
         if (!existingBooking.getCustomer().getId().equals(updatedBookingDto.getCustomer().getId())) {
             throw new RuntimeException("Customer cannot be changed on an existing booking.");
         }
 
-        // Kontrollera att rummet är ledigt under det nya datumintervallet
+        //kolla att rummet är ledigt under det nya datumet
         List<Booking> overlapping = bookingRepository.findOverlappingBookings(
                 updatedBookingDto.getRoom().getId(),
                 updatedBookingDto.getCheckIn(),
@@ -124,11 +125,10 @@ public class BookingServiceImpl implements BookingService {
             throw new RuntimeException("Room is already booked during the selected dates.");
         }
 
-        // Hämta nytt rum (om det bytts)
+        //hämtar nya eller samma rum
         Room room = roomRepository.findById(updatedBookingDto.getRoom().getId())
                 .orElseThrow(() -> new RuntimeException("Room not found"));
 
-        // Uppdatera tillåtna fält
         existingBooking.setCheckIn(updatedBookingDto.getCheckIn());
         existingBooking.setCheckOut(updatedBookingDto.getCheckOut());
         existingBooking.setExtraBeds(updatedBookingDto.getExtraBeds());
@@ -139,10 +139,6 @@ public class BookingServiceImpl implements BookingService {
         return "Booking updated successfully";
     }
 
-
-
-
-    //kanske inte behövs
     //@Override
     //public Booking dtoBookingToEntityBooking(BookingDto b) {
       //  return Booking.builder().checkIn(b.getCheckIn()).checkOut(b.getCheckOut()).extraBeds(b.getExtraBeds())
