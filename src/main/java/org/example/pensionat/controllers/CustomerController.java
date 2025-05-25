@@ -45,7 +45,7 @@ public class CustomerController {
         return customerService.addCustomer(customer);
     }
 
-    @PutMapping("customer/{id}/update") //behövs ingen @Valid
+    @PutMapping("customer/{id}/update")
     public String updateCustomer(@PathVariable Long id, @RequestBody DetailedCustomerDto customerDto) {
         log.info("Update customer with id: {}", id);
         return customerService.updateCustomer(id, customerDto);

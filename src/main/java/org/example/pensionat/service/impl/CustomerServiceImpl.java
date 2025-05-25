@@ -86,6 +86,7 @@ public class CustomerServiceImpl implements CustomerService {
 
         Customer existingCustomer = optionalCustomer.get();
 
+        //TODO ändra, så att man måste fylla i alla fält + @valid i controllern
         if (updatedCustomerDto.getName() != null) {
             existingCustomer.setName(updatedCustomerDto.getName());
         }
