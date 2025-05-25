@@ -1,17 +1,14 @@
 package org.example.pensionat.service.impl;
 
-import jakarta.persistence.Column;
 import org.example.pensionat.dtos.DetailedCustomerDto;
 import org.example.pensionat.models.Customer;
 import org.example.pensionat.repository.CustomerRepository;
 import org.example.pensionat.service.BookingService;
-import org.example.pensionat.service.CustomerService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
@@ -32,7 +29,7 @@ class CustomerServiceImplTest {
     private BookingService bookingService;
 
     @InjectMocks
-    private CustomerServiceImpl customerServiceImpl = new CustomerServiceImpl(customerRepository, bookingService);
+    private CustomerServiceImpl customerServiceImpl;
 
     private long id = 1L;
 
@@ -53,20 +50,20 @@ class CustomerServiceImplTest {
     void entityCustomerToDetailedCustomerDto() {
         DetailedCustomerDto actual = customerServiceImpl.entityCustomerToDetailedCustomerDto(customer);
 
-        assertEquals(actual.getId(), detailedCustomerDto.getId(), "Should be the same id");
-        assertEquals(actual.getName(), detailedCustomerDto.getName(), "Should be the same name");
-        assertEquals(actual.getEmail(), detailedCustomerDto.getEmail(), "Should be the same email");
-        assertEquals(actual.getAddress(), detailedCustomerDto.getAddress(), "Should be the same address");
+        assertEquals(customer.getId(), actual.getId(), "Should be the same id");
+        assertEquals(customer.getName(), actual.getName(), "Should be the same name");
+        assertEquals(customer.getEmail(), actual.getEmail(), "Should be the same email");
+        assertEquals(customer.getAddress(), actual.getAddress(), "Should be the same address");
     }
 
     @Test
-    void detailedCustomerToEntityCustomerDto() {
+    void dtoDetailedCustomerToEntityCustomer() {
         Customer actual = customerServiceImpl.dtoDetailedCustomerToEntityCustomer(detailedCustomerDto);
 
-        assertEquals(actual.getId(), detailedCustomerDto.getId(), "Should be the same id");
-        assertEquals(actual.getName(), detailedCustomerDto.getName(), "Should be the same name");
-        assertEquals(actual.getEmail(), detailedCustomerDto.getEmail(), "Should be the same email");
-        assertEquals(actual.getAddress(), detailedCustomerDto.getAddress(), "Should be the same address");
+        assertEquals(detailedCustomerDto.getId(), actual.getId(), "Should be the same id");
+        assertEquals(detailedCustomerDto.getName(), actual.getName(), "Should be the same name");
+        assertEquals(detailedCustomerDto.getEmail(), actual.getEmail(), "Should be the same email");
+        assertEquals(detailedCustomerDto.getAddress(), actual.getAddress(), "Should be the same address");
     }
 
     @Test

@@ -31,7 +31,7 @@ public class RoomServiceImplTest {
     private BookingService bookingService;
 
     @InjectMocks
-    private RoomServiceImpl roomServiceImpl = new RoomServiceImpl(bookingService, roomRepository); //kanske måste manuellt injekta
+    private RoomServiceImpl roomServiceImpl;
 
     private long id = 1L;
 
@@ -52,22 +52,22 @@ public class RoomServiceImplTest {
     void entityRoomToDetailedRoomDto() {
        DetailedRoomDto actual = roomServiceImpl.entityRoomToDetailedRoomDto(room);
 
-        assertEquals(actual.getId(), detailedRoomDto.getId(), "Id should be the same");
-        assertEquals(actual.getRoomNumber(), detailedRoomDto.getRoomNumber(), "Room number should be the same");
-        assertEquals(actual.getRoomType(), detailedRoomDto.getRoomType(), "Room type should be the same");
-        assertEquals(actual.getBaseCapacity(), detailedRoomDto.getBaseCapacity(), "Base capacity should be the same");
-        assertEquals(actual.getMaxExtraBeds(), detailedRoomDto.getMaxExtraBeds(), "Max extra beds should be the same");
+        assertEquals(room.getId(), actual.getId(), "Id should be the same");
+        assertEquals(room.getRoomNumber(), actual.getRoomNumber(), "Room number should be the same");
+        assertEquals(room.getType(), actual.getRoomType(), "Room type should be the same");
+        assertEquals(room.getBaseCapacity(), actual.getBaseCapacity(), "Base capacity should be the same");
+        assertEquals(room.getMaxExtraBeds(), actual.getMaxExtraBeds(), "Max extra beds should be the same");
     }
 
     @Test
     void detailedRoomToEntityRoom() {
         Room actual = roomServiceImpl.dtoDetailedRoomToEntityRoom(detailedRoomDto);
 
-        assertEquals(actual.getId(), detailedRoomDto.getId(), "Id should be the same");
-        assertEquals(actual.getRoomNumber(), detailedRoomDto.getRoomNumber(), "Room number should be the same");
-        assertEquals(actual.getType(), detailedRoomDto.getRoomType(), "Room type should be the same");
-        assertEquals(actual.getBaseCapacity(), detailedRoomDto.getBaseCapacity(), "Base capacity should be the same");
-        assertEquals(actual.getMaxExtraBeds(), detailedRoomDto.getMaxExtraBeds(), "Max extra beds should be the same");
+        assertEquals(detailedRoomDto.getId(), actual.getId(), "Id should be the same");
+        assertEquals(detailedRoomDto.getRoomNumber(), actual.getRoomNumber(), "Room number should be the same");
+        assertEquals(detailedRoomDto.getRoomType(), actual.getType(), "Room type should be the same");
+        assertEquals(detailedRoomDto.getBaseCapacity(), actual.getBaseCapacity(), "Base capacity should be the same");
+        assertEquals(detailedRoomDto.getMaxExtraBeds(), actual.getMaxExtraBeds(), "Max extra beds should be the same");
     }
 
     @Test

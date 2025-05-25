@@ -1,7 +1,5 @@
 package org.example.pensionat.dtos;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,10 +1,7 @@
 package org.example.pensionat.service.impl;
 
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import org.example.pensionat.dtos.CustomerDto;
 import org.example.pensionat.dtos.DetailedBookingDto;
-import org.example.pensionat.dtos.DetailedCustomerDto;
 import org.example.pensionat.dtos.RoomDto;
 import org.example.pensionat.models.Booking;
 import org.example.pensionat.models.Customer;
@@ -68,26 +65,32 @@ class BookingServiceImplTest {
     void entityBookingToDetailedBookingDto() {
         DetailedBookingDto actual = bookingService.entityBookingToDetailedBookingDto(booking);
 
-        assertEquals(checkIn, actual.getCheckIn(), "Should be the same date");
-        assertEquals(checkOut, actual.getCheckOut(), "Should be the same date");
-        assertEquals(extraBeds, actual.getExtraBeds(), "Should be the same number");
-        assertEquals(numberOfGuests, actual.getNumberOfGuests(), "Should be the same number");
+        assertNotNull(actual.getCustomer(), "Customer should not be null");
+        assertNotNull(actual.getRoom(), "Room should not be null");
+
+        assertEquals(booking.getCheckIn(), actual.getCheckIn(), "Should be the same date");
+        assertEquals(booking.getCheckOut(), actual.getCheckOut(), "Should be the same date");
+        assertEquals(booking.getExtraBeds(), actual.getExtraBeds(), "Should be the same number");
+        assertEquals(booking.getNumberOfGuests(), actual.getNumberOfGuests(), "Should be the same number");
         assertEquals(booking.getId(), actual.getId(), "Should be the same booking id");
-        assertEquals(customer.getId(), actual.getCustomer().getId(), "Should be the same customer id");
-        assertEquals(room.getId(), actual.getRoom().getId(), "Should be the same room id");
+        assertEquals(booking.getCustomer().getId(), actual.getCustomer().getId(), "Should be the same customer id");
+        assertEquals(booking.getRoom().getId(), actual.getRoom().getId(), "Should be the same room id");
     }
 
     @Test
     void dtoDetailedBookingToEntityBooking() {
         Booking actual = bookingService.dtoDetailedBookingToEntityBooking(dtoBooking, customer, room);
 
-        assertEquals(checkIn, actual.getCheckIn(), "Should be the same date");
-        assertEquals(checkOut, actual.getCheckOut(), "Should be the same date");
-        assertEquals(extraBeds, actual.getExtraBeds(), "Should be the same number");
-        assertEquals(numberOfGuests, actual.getNumberOfGuests(), "Should be the same number");
-        assertEquals(booking.getId(), actual.getId(), "Should be the same booking id");
-        assertEquals(customer.getId(), actual.getCustomer().getId(), "Should be the same customer id");
-        assertEquals(room.getId(), actual.getRoom().getId(), "Should be the same room id");
+        assertNotNull(actual.getCustomer(), "Customer should not be null");
+        assertNotNull(actual.getRoom(), "Room should not be null");
+
+        assertEquals(dtoBooking.getCheckIn(), actual.getCheckIn(), "Should be the same date");
+        assertEquals(dtoBooking.getCheckOut(), actual.getCheckOut(), "Should be the same date");
+        assertEquals(dtoBooking.getExtraBeds(), actual.getExtraBeds(), "Should be the same number");
+        assertEquals(dtoBooking.getNumberOfGuests(), actual.getNumberOfGuests(), "Should be the same number");
+        assertEquals(dtoBooking.getId(), actual.getId(), "Should be the same booking id");
+        assertEquals(dtoBooking.getCustomer().getId(), actual.getCustomer().getId(), "Should be the same customer id");
+        assertEquals(dtoBooking.getRoom().getId(), actual.getRoom().getId(), "Should be the same room id");
     }
 
     @Test

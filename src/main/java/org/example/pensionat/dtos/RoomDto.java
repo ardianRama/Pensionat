@@ -12,6 +12,4 @@ import lombok.NoArgsConstructor;
 public class RoomDto {
 
     private Long id;
-
-    //private int roomNumber;
 }

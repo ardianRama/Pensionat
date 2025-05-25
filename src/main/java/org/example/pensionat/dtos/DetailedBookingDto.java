@@ -7,8 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.example.pensionat.models.Customer;
-import org.example.pensionat.models.Room;
 
 import java.time.LocalDate;
 
