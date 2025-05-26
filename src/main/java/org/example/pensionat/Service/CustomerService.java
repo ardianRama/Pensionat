@@ -24,4 +24,21 @@ public interface CustomerService {
     public String addCustomer(DetailedCustomerDto customerdto);
 
     public String updateCustomer(Long id, DetailedCustomerDto updatedCustomerDto);
+
+    //sebbe
+    //Optional<Customer> findByNameAndEmail(String name, String email);
+
+    public boolean deleteCustomerByNameAndEmail(String name, String email);
+
+    Optional<DetailedCustomerDto> findByNameAndEmail(String name, String email);
+
+    //public String updateCustomer2(DetailedCustomerDto updatedCustomerDto);
+
+    //update - dto customer
+    public boolean updateCustomer(String email, DetailedCustomerDto dto);
+
+
+
+
+
 }

@@ -103,4 +103,42 @@ public class CustomerServiceImpl implements CustomerService {
         return "Customer with id " + id + " was successfully updated.";
     }
 
+    //sebbe
+    @Override
+    public Optional<DetailedCustomerDto> findByNameAndEmail(String name, String email) {
+        Optional<Customer> customer = customerRepository.findByNameAndEmail(name, email);
+        return customer.map(this::entityCustomerToDetailedCustomerDto);
+    }
+
+
+
+    //sebbe - update
+    @Override
+    public boolean updateCustomer(String email, DetailedCustomerDto dto) {
+        Optional<Customer> optionalCustomer = customerRepository.findByEmail(email);
+
+        if (optionalCustomer.isPresent()) {
+            Customer customer = optionalCustomer.get();
+            customer.setName(dto.getName());
+            customer.setEmail(dto.getEmail());
+            customer.setPhoneNumber(dto.getPhoneNumber());
+            customer.setAddress(dto.getAddress());
+            customerRepository.save(customer);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean deleteCustomerByNameAndEmail(String name, String email) {
+        Optional<Customer> optionalCustomer = customerRepository.findByNameAndEmail(name, email);
+        if (optionalCustomer.isPresent()) {
+            Customer customer = optionalCustomer.get();
+            if (customer.getMyBookings() == null || customer.getMyBookings().isEmpty()) {
+                customerRepository.delete(customer);
+                return true;
+            }
+        }
+        return false;
+    }
 }

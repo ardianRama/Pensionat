@@ -13,5 +13,5 @@ public class RoomDto {
 
     private Long id;
 
-    //private int roomNumber;
+    private int roomNumber;
 }
