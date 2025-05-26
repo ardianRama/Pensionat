@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <title>Update Room</title>
+  <link rel="stylesheet" th:href="@{/css/styles.css}" />
+</head>
+<body>
+
+<h1>Update Room</h1>
+
+<div th:if="${errorMessage}" class="message error-message">
+  <p th:text="${errorMessage}"></p>
+</div>
+
+
+<form th:action="@{'/room/update/' + ${room.id}}" th:object="${room}" method="post">
+
+  <div>
+    <label for="roomNumber">Room Number:</label>
+    <input type="number" id="roomNumber" th:field="*{roomNumber}" min="1" />
+    <div th:if="${#fields.hasErrors('roomNumber')}" th:errors="*{roomNumber}" class="error"></div>
+  </div>
+
+  <div>
+    <label for="roomType">Room Type:</label>
+    <select id="roomType" th:field="*{roomType}">
+      <option th:each="type : ${roomTypes}"
+              th:value="${type}"
+              th:text="${type}"
+              th:selected="${type} == ${room.roomType}">
+      </option>
+    </select>
+    <div th:if="${#fields.hasErrors('roomType')}" th:errors="*{roomType}" class="error"></div>
+  </div>
+
+  <div>
+    <label for="baseCapacity">Base Capacity:</label>
+    <input type="number" id="baseCapacity" th:field="*{baseCapacity}" min="1" max="2" />
+    <div th:if="${#fields.hasErrors('baseCapacity')}" th:errors="*{baseCapacity}" class="error"></div>
+  </div>
+
+  <div>
+    <label for="maxExtraBeds">Max Extra Beds:</label>
+    <input type="number" id="maxExtraBeds" th:field="*{maxExtraBeds}" min="0" max="2" />
+    <div th:if="${#fields.hasErrors('maxExtraBeds')}" th:errors="*{maxExtraBeds}" class="error"></div>
+  </div>
+
+  <div style="margin-top: 20px;">
+    <button type="submit" class="submit-button">Update Room</button>
+    <a href="/room/list" class="cancel-button">Cancel</a>
+  </div>
+
+</form>
+
+</body>
+</html>

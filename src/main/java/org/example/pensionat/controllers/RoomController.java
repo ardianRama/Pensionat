@@ -60,16 +60,6 @@ public class RoomController {
         return "redirect:/room/list";
     }
 
-
-    /**
-    @DeleteMapping("room/{id}/delete") //TODO ta bort?
-    public String deleteRoom (@PathVariable Long id) {
-        log.info("Delete room by id: {}", id);
-        return roomService.deleteRoom(id);
-    }
-
-     */
-
     //funkar
     @GetMapping("/add")
     public String showAddRoomForm(Model model) {
@@ -99,19 +89,51 @@ public class RoomController {
         return "redirect:/room/list";
     }
 
-/**
-    @PostMapping("room/add") //TODO TA BORT?
-    public String addRoom(@RequestBody @Valid DetailedRoomDto room) {
-        log.info("Added new room with id: {}", room.getId());
-        return roomService.addRoom(room);
+    //funkar inte riktigt
+    @GetMapping("/update/{id}")
+    public String showUpdateForm(@PathVariable Long id, Model model) {
+        Optional<DetailedRoomDto> roomOpt = roomService.getDetailedRoomById(id);
+        if (roomOpt.isEmpty()) {
+            // hantera rum finns ej, t ex redirect med felmeddelande
+            return "redirect:/room/list";
+        }
+        model.addAttribute("room", roomOpt.get());
+        model.addAttribute("roomTypes", RoomType.values());
+        return "roomUpdateForm";
     }
- */
 
-    @PutMapping("room/{id}/update")
-    public String updateRoom(@PathVariable Long id, @RequestBody DetailedRoomDto roomDto) { //ingen @Valid behövs
-        log.info("Update room with id: {}", id);
-        return roomService.updateRoom(id, roomDto);
+    //funkar inte riktigt
+    @PostMapping("/update/{id}")
+    public String updateRoomSubmit(@PathVariable Long id,
+                                   @Valid @ModelAttribute("room") DetailedRoomDto roomDto,
+                                   BindingResult bindingResult,
+                                   Model model,
+                                   RedirectAttributes redirectAttributes) {
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("roomTypes", RoomType.values());
+            return "roomUpdateForm";
+        }
+
+        String message = roomService.updateRoom(id, roomDto);
+
+        // Kontrollera om det är ett felmeddelande
+        if (message.contains("cannot be updated") || message.contains("not found") || message.contains("must")) {
+            model.addAttribute("roomTypes", RoomType.values());
+            model.addAttribute("errorMessage", message);
+            return "roomUpdateForm";
+        }
+
+        redirectAttributes.addFlashAttribute("updateMessage", message); // visa lyckat meddelande i roomList
+        return "redirect:/room/list";
     }
+
+    //RestController
+    //@PutMapping("room/{id}/update")
+    //public String updateRoom(@PathVariable Long id, @RequestBody DetailedRoomDto roomDto) { //ingen @Valid behövs
+      //  log.info("Update room with id: {}", id);
+        //return roomService.updateRoom(id, roomDto);
+    //}
 
     //http://localhost:8080/room/search?checkIn=2025-05-20&checkOut=2025-05-28&guests=4
     @GetMapping("room/search")

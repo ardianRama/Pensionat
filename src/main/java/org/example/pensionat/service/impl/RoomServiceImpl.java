@@ -95,6 +95,7 @@ public class RoomServiceImpl implements RoomService {
         return "Room with number " + room.getRoomNumber() + " was successfully added.";
     }
 
+
     @Override
     public String updateRoom(Long id, DetailedRoomDto updatedRoomDto) {
         Optional<Room> optionalRoom = roomRepository.findById(id);
@@ -132,6 +133,7 @@ public class RoomServiceImpl implements RoomService {
         roomRepository.save(existingRoom);
         return "Room with id " + id + " was successfully updated.";
     }
+
 
     @Override
     public String validateRoomData(DetailedRoomDto roomDto) {
