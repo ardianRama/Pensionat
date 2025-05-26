@@ -9,7 +9,12 @@
 <div class="form-container">
   <h1>Add New Room</h1>
 
-  <div th:if="${serviceError}" class="error-message">
+
+  <div th:if="${serviceMessage}" class="message" style="color: green;">
+    <p th:text="${serviceMessage}"></p>
+  </div>
+
+  <div th:if="${serviceError}" class="error-message" style="color: red;">
     <p th:text="${serviceError}"></p>
   </div>
 
