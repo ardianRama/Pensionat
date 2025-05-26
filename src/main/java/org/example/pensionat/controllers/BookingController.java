@@ -55,7 +55,7 @@ public class BookingController {
         return "booking/bookingAddForm";
     }
 
-    //funkar
+    //funkar (men inte 100% validering för rummen pga ej kustomiserad validering)
     @PostMapping("/add")
     public String addBookingSubmit(@Valid @ModelAttribute("booking") DetailedBookingDto bookingDto,
                                    BindingResult bindingResult,
