@@ -162,3 +162,17 @@ form input[type="submit"]:hover {
     text-align: center;
 }
 
+/* cancel booking message */
+.message.delete-message {
+    background-color: #e0f7fa;
+    color: #00796b;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #004d40;
+    border-radius: 4px;
+    text-align: center;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
+

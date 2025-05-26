@@ -126,7 +126,7 @@ public class RoomController {
         return "redirect:/room/list";
     }
 
-    //RestController för update, ta inte bort än förrän controller varianten är klar
+    //RestController för update!!, ta inte bort än förrän controller varianten är klar
     //@PutMapping("room/{id}/update")
     //public String updateRoom(@PathVariable Long id, @RequestBody DetailedRoomDto roomDto) { //ingen @Valid behövs
       //  log.info("Update room with id: {}", id);

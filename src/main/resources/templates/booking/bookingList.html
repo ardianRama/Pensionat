@@ -9,6 +9,16 @@
 
 <h1>All Bookings</h1>
 
+<div th:if="${deleteMessage}" class="message delete-message">
+    <p th:text="${deleteMessage}"></p>
+</div>
+
+<div style="text-align: center; margin-top: 20px;">
+    <a th:href="@{/booking/add}" class="button">➕ Add Booking</a>
+</div>
+
+
+
 <table>
     <thead>
     <tr>
@@ -32,6 +42,7 @@
         <td th:text="${booking.customer.id}">5</td>
         <td th:text="${booking.room.id}">101</td>
         <td>
+            <a th:href="@{'/booking/' + ${booking.id}}">View</a> |
             <form th:action="@{'/booking/' + ${booking.id} + '/delete'}" method="post" style="display:inline;">
                 <button type="submit" class="delete-button"
                         onclick="return confirm('Are you sure you want to cancel this booking?');">
