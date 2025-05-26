@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>All Rooms</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+
+</head>
+<body>
+
+<h1>All Rooms</h1>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Room Number</th>
+        <th>Room Type</th>
+        <th>Base Capacity</th>
+        <th>Max Extra Beds</th>
+        <th>Bookings</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="room : ${rooms}">
+        <td th:text="${room.id}">1</td>
+        <td th:text="${room.roomNumber}">101</td>
+        <td th:text="${room.roomType}">DOUBLE</td>
+        <td th:text="${room.baseCapacity}">2</td>
+        <td th:text="${room.maxExtraBeds}">1</td>
+        <td th:text="${#lists.size(room.myBookings)}">0</td>
+        <td>
+            <a th:href="@{'/room/view/' + ${room.id}}">View</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
+

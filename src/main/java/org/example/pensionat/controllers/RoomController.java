@@ -9,32 +9,43 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-@RestController
+@Controller
 @RequiredArgsConstructor
+@RequestMapping("/room")
 public class RoomController {
 
     private static final Logger log = LoggerFactory.getLogger(RoomController.class);
 
     private final RoomService roomService;
 
-    @GetMapping("room")
-    public List<DetailedRoomDto> getAllRooms() {
+    @GetMapping("/list")
+    public String getAllRooms(Model model) {
         log.info("Get all rooms");
-        return roomService.getAllDetailedRooms();
+        List<DetailedRoomDto> rooms = roomService.getAllDetailedRooms();
+        model.addAttribute("rooms", rooms);
+        return "roomList";
     }
 
-    @GetMapping("/room/{id}")
-    public ResponseEntity<DetailedRoomDto> getRoomById(@PathVariable Long id) {
-        Optional<DetailedRoomDto> dto = roomService.getDetailedRoomById(id);
+
+    @GetMapping("/view/{id}")
+    public String getRoomById(@PathVariable Long id, Model model) {
         log.info("Get room by id: {}", id);
-        return dto.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build()); //mappa om till en responseEntity
+        Optional<DetailedRoomDto> roomOpt = roomService.getDetailedRoomById(id);
+
+        if (roomOpt.isPresent()) {
+            model.addAttribute("room", roomOpt.get());
+            return "roomDetails";
+        } else {
+            return "redirect:/room/list";
+        }
     }
 
     @DeleteMapping("room/{id}/delete")
