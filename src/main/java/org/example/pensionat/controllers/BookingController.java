@@ -2,11 +2,6 @@ package org.example.pensionat.controllers;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.example.pensionat.dtos.CustomerDto;
-import org.example.pensionat.dtos.RoomDto;
-import org.example.pensionat.repository.BookingRepository;
-import org.example.pensionat.repository.CustomerRepository;
-import org.example.pensionat.repository.RoomRepository;
 import org.example.pensionat.service.BookingService;
 import org.example.pensionat.dtos.DetailedBookingDto;
 import org.example.pensionat.service.CustomerService;
@@ -24,7 +19,7 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("booking")
+@RequestMapping("/booking")
 public class BookingController {
 
     private static final Logger log = LoggerFactory.getLogger(BookingController.class);
@@ -32,8 +27,6 @@ public class BookingController {
     private final BookingService bookingService;
     private final CustomerService customerService;
     private final RoomService roomService;
-    private final CustomerRepository customerRepository;
-    private final RoomRepository roomRepository;
 
     //funkar
     @GetMapping("/list")
@@ -67,16 +60,13 @@ public class BookingController {
     public String addBookingSubmit(@Valid @ModelAttribute("booking") DetailedBookingDto bookingDto,
                                    BindingResult bindingResult,
                                    Model model) {
-        // Lägg alltid till listor med customers och rooms för dropdowns
         model.addAttribute("customers", customerService.getAllDetailedCustomer());
         model.addAttribute("rooms", roomService.getAllDetailedRooms());
 
-        // Om det finns valideringsfel, visa formuläret igen
         if (bindingResult.hasErrors()) {
             return "booking/bookingAddForm";
         }
 
-        // Anropa service för att lägga till bokning
         String message = bookingService.addBooking(bookingDto);
 
         if ("Booking added successfully.".equals(message)) {

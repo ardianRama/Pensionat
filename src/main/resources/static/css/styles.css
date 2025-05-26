@@ -121,7 +121,7 @@ form input[type="submit"]:hover {
     font-size: 14px;
 }
 
-/* Delete button */
+/* Delete button for room */
 .delete-button {
     background-color: #dc3545;
     color: white;

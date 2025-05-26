@@ -115,7 +115,6 @@ public class RoomController {
 
         String message = roomService.updateRoom(id, roomDto);
 
-        // Kontrollera om det är ett felmeddelande
         if (message.contains("cannot be updated") || message.contains("not found") || message.contains("must")) {
             model.addAttribute("roomTypes", RoomType.values());
             model.addAttribute("errorMessage", message);
