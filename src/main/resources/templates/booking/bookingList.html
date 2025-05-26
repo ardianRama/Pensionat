@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>All Bookings</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+</head>
+<body>
+
+<h1>All Bookings</h1>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Check-in</th>
+        <th>Check-out</th>
+        <th>Extra Beds</th>
+        <th>Guests</th>
+        <th>Customer ID</th>
+        <th>Room ID</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="booking : ${bookings}">
+        <td th:text="${booking.id}">1</td>
+        <td th:text="${booking.checkIn}">2025-05-26</td>
+        <td th:text="${booking.checkOut}">2025-05-28</td>
+        <td th:text="${booking.extraBeds}">1</td>
+        <td th:text="${booking.numberOfGuests}">2</td>
+        <td th:text="${booking.customer.id}">5</td>
+        <td th:text="${booking.room.id}">101</td>
+        <td>
+            <form th:action="@{'/booking/' + ${booking.id} + '/delete'}" method="post" style="display:inline;">
+                <button type="submit" class="delete-button"
+                        onclick="return confirm('Are you sure you want to cancel this booking?');">
+                    Cancel
+                </button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
+
+

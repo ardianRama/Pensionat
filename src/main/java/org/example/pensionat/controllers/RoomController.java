@@ -9,7 +9,6 @@ import org.example.pensionat.dtos.RoomAvailableStat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -35,7 +34,7 @@ public class RoomController {
         log.info("Get all rooms");
         List<DetailedRoomDto> rooms = roomService.getAllDetailedRooms();
         model.addAttribute("rooms", rooms);
-        return "roomList";
+        return "room/roomList";
     }
 
     //funkar
@@ -46,9 +45,9 @@ public class RoomController {
 
         if (roomOpt.isPresent()) {
             model.addAttribute("room", roomOpt.get());
-            return "roomDetails";
+            return "room/roomDetails";
         } else {
-            return "redirect:/room/list";
+            return "redirect:room/room/list";
         }
     }
 
@@ -65,7 +64,7 @@ public class RoomController {
     public String showAddRoomForm(Model model) {
         model.addAttribute("room", new DetailedRoomDto());
         model.addAttribute("roomTypes", RoomType.values());  // Om du vill visa en dropdown med rumstyper
-        return "roomAddForm";
+        return "room/roomAddForm";
     }
 
     //funkar
@@ -75,7 +74,7 @@ public class RoomController {
                                 Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("roomTypes", RoomType.values());
-            return "roomAddForm";
+            return "room/roomAddForm";
         }
 
         String validationError = roomService.addRoom(room);
@@ -83,7 +82,7 @@ public class RoomController {
         if (validationError != null) {
             model.addAttribute("roomTypes", RoomType.values());
             model.addAttribute("serviceError", validationError);
-            return "roomAddForm";
+            return "room/roomAddForm";
         }
 
         return "redirect:/room/list";
@@ -94,12 +93,11 @@ public class RoomController {
     public String showUpdateForm(@PathVariable Long id, Model model) {
         Optional<DetailedRoomDto> roomOpt = roomService.getDetailedRoomById(id);
         if (roomOpt.isEmpty()) {
-            // hantera rum finns ej, t ex redirect med felmeddelande
             return "redirect:/room/list";
         }
         model.addAttribute("room", roomOpt.get());
         model.addAttribute("roomTypes", RoomType.values());
-        return "roomUpdateForm";
+        return "room/roomUpdateForm";
     }
 
     //funkar inte riktigt
@@ -112,7 +110,7 @@ public class RoomController {
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("roomTypes", RoomType.values());
-            return "roomUpdateForm";
+            return "room/roomUpdateForm";
         }
 
         String message = roomService.updateRoom(id, roomDto);
@@ -121,14 +119,14 @@ public class RoomController {
         if (message.contains("cannot be updated") || message.contains("not found") || message.contains("must")) {
             model.addAttribute("roomTypes", RoomType.values());
             model.addAttribute("errorMessage", message);
-            return "roomUpdateForm";
+            return "room/roomUpdateForm";
         }
 
         redirectAttributes.addFlashAttribute("updateMessage", message); // visa lyckat meddelande i roomList
         return "redirect:/room/list";
     }
 
-    //RestController, ta inte bort än förrän controller varianten är klar
+    //RestController för update, ta inte bort än förrän controller varianten är klar
     //@PutMapping("room/{id}/update")
     //public String updateRoom(@PathVariable Long id, @RequestBody DetailedRoomDto roomDto) { //ingen @Valid behövs
       //  log.info("Update room with id: {}", id);
@@ -138,7 +136,7 @@ public class RoomController {
     //funkar
     @GetMapping("/search")
     public String showSearchForm() {
-        return "roomSearch";
+        return "room/roomSearch";
     }
 
     //funkar
@@ -160,7 +158,7 @@ public class RoomController {
         model.addAttribute("checkOut", checkOut);
         model.addAttribute("guests", numberOfGuests);
 
-        return "roomSearch";
+        return "room/roomSearch";
     }
 
 }

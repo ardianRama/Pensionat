@@ -7,22 +7,28 @@ import org.example.pensionat.dtos.DetailedBookingDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-//...
-@RestController
+
+@Controller
 @RequiredArgsConstructor
+@RequestMapping("booking")
 public class BookingController {
 
     private static final Logger log = LoggerFactory.getLogger(BookingController.class);
 
     private final BookingService bookingService;
 
-    @GetMapping("booking")
-    public List<DetailedBookingDto> getAllBookings() {
+    //funkar
+    @GetMapping("/list")
+    public String getAllBookings(Model model) {
         log.info("Get all bookings");
-        return bookingService.getAllDetailedBooking();
+        List<DetailedBookingDto> bookings = bookingService.getAllDetailedBooking();
+        model.addAttribute("bookings", bookings);
+        return "booking/bookingList";
     }
 
     @GetMapping("booking/{id}")
