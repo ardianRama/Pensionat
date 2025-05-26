@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registrera</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+  <!-- Theme -->
+  <link rel="stylesheet" th:href="@{/theme/bootstrap.min.css}">
+</head>
+<body class="bg-light">
+
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+
+      <div class="card shadow-sm">
+        <div class="card-header text-center">
+          <h4>Boka rum</h4>
+        </div>
+        <div class="card-body text-center">
+          <form th:action="@{/booking}" method="post">
+            <div class="mb-3">
+              <input class="mx-2" type="date" name="checkIn" required>
+              <input class="mx-2" type="date" name="checkOut" required>
+              <select class="mx-2" name="roomId">
+                <option th:each="room : ${rooms}" th:value="${room.id}" th:text="${room.roomNumber}">101</option>
+              </select>
+            </div>
+            <button class="btn btn-outline-dark" type="submit">Boka</button>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

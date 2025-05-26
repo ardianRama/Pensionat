@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kundinformation</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+  <link rel="stylesheet" th:href="@{/Theme/bootstrap.min.css}">
+</head>
+<body class="bg-light">
+
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+
+      <!-- Visar framgångsmeddelande -->
+      <div th:if="${messageUpdateCustomer}" class="alert alert-success" role="alert">
+        <span th:text="${messageUpdateCustomer}"></span>
+      </div>
+      <div th:if="${message1}" class="alert alert-success" role="alert">
+        <span th:text="${message1}"></span>
+      </div>
+
+      <!-- Visar felmeddelande -->
+      <div th:if="${errorUpdateCustomer}" class="alert alert-danger" role="alert">
+        <span th:text="${errorUpdateCustomer}"></span>
+      </div>
+      <div th:if="${error1}" class="alert alert-danger" role="alert">
+        <span th:text="${error1}"></span>
+      </div>
+      <div th:if="${errorEmpty}" class="alert alert-danger" role="alert">
+        <span th:text="${errorEmpty}"></span>
+      </div>
+      <div th:if="${errorFindCustomer}" class="alert alert-danger" role="alert">
+        <span th:text="${errorFindCustomer}"></span>
+      </div>
+
+      <form action="/customer-management" method="get" class="mb-4"> <div class="form-group mb-3"> <label for="name">Namn</label>
+
+        <input type="text" id="name" name="name" class="form-control" placeholder="Ange namn" required th:value="${name} ?: ''">
+      </div>
+        <div class="form-group mb-3"> <label for="email">E-post</label>
+          <input type="email" id="email" name="email" class="form-control" placeholder="Ange e-post" required th:value="${email} ?: ''">
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-3">Sök kund</button>
+      </form>
+
+      <!-- pensar en utilizar esto para no escribir tanto customer.name
+      th:object="${customer}" y th:text="*{name}" -->
+      <div th:if="${customer != null}" th:object="${customer}" class="card shadow-sm mt-4"> <div class="card-header text-center">
+        <h4>Kundinformation</h4>
+      </div>
+        <div class="card-body">
+          <p><strong>Namn:</strong> <span th:text="${customer.name}">Namn</span></p>
+          <p><strong>E-post:</strong> <span th:text="${customer.email}">epost@example.com</span></p>
+          <p><strong>Telefon:</strong> <span th:text="${customer.phoneNumber}">0700000000</span></p>
+          <p><strong>Adress:</strong> <span th:text="${customer.address}">Gatuadress</span></p>
+
+          <hr>
+          <h5>Bokningar</h5>
+          <div th:if="${!#lists.isEmpty(customer.myBookings)}">
+            <div th:each="booking : ${customer.myBookings}">
+              <p><strong>Bokad rum:</strong> <span th:text="${booking.room.getRoomNumber()}"></span></p>
+              <p><strong>Incheckning:</strong> <span th:text="${booking.checkIndto}"></span></p>
+              <p><strong>Utcheckning:</strong> <span th:text="${booking.checkOut}"></span></p>
+              <p><strong>Extra sängar:</strong> <span th:text="${booking.extraBeds}"></span></p>
+              <p><strong>Antal gäster:</strong> <span th:text="${booking.numberOfGuests}"></span></p>
+              <hr>
+            </div>
+          </div>
+          <div th:unless="${!#lists.isEmpty(customer.myBookings)}">
+            <p>Inga bokningar.</p>
+          </div>
+
+          <div class="d-flex justify-content-between mt-3">
+
+            <!-- Ändrat -->
+            <a th:href="@{/customer-update-form(name=${customer.name}, email=${customer.email})}" class="btn btn-primary">Uppdatera kund</a>
+
+            <form th:action="@{/delete-customer}" method="post" onsubmit="return confirm('Är du säker på att du vill radera denna kund?');">
+              <input type="hidden" name="name" th:value="${customer.name}" />
+              <input type="hidden" name="email" th:value="${customer.email}" />
+              <button type="submit" class="btn btn-danger">Radera kund</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  function showUpdateForm() {
+    document.getElementById("update-form").style.display = "block";
+    document.getElementById("display-info").style.display = "none";
+  }
+
+  function cancelUpdate() {
+    document.getElementById("update-form").style.display = "none";
+    document.getElementById("display-info").style.display = "block";
+  }
+</script>
+
+</body>
+</html>
