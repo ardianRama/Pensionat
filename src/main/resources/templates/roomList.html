@@ -4,11 +4,15 @@
     <meta charset="UTF-8">
     <title>All Rooms</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}" />
-
 </head>
 <body>
 
 <h1>All Rooms</h1>
+
+<div th:if="${deleteMessage}" class="message delete-message">
+    <p th:text="${deleteMessage}"></p>
+</div>
+
 
 <div style="text-align: center; margin-top: 20px;">
     <a href="/room/add" class="add-room-button">➕ Add Room</a>
@@ -35,7 +39,10 @@
         <td th:text="${room.maxExtraBeds}">1</td>
         <td th:text="${#lists.size(room.myBookings)}">0</td>
         <td>
-            <a th:href="@{'/room/view/' + ${room.id}}">View</a>
+            <a th:href="@{'/room/view/' + ${room.id}}">View</a> |
+            <form th:action="@{'/room/delete/' + ${room.id}}" method="post" style="display:inline;">
+                <button type="submit" class="delete-button" onclick="return confirm('Are you sure you want to delete this room?');">Delete</button>
+            </form>
         </td>
     </tr>
     </tbody>
@@ -43,4 +50,5 @@
 
 </body>
 </html>
+
 

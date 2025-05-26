@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -28,6 +29,7 @@ public class RoomController {
 
     private final RoomService roomService;
 
+    //funkar
     @GetMapping("/list")
     public String getAllRooms(Model model) {
         log.info("Get all rooms");
@@ -36,7 +38,7 @@ public class RoomController {
         return "roomList";
     }
 
-
+    //funkar
     @GetMapping("/view/{id}")
     public String getRoomById(@PathVariable Long id, Model model) {
         log.info("Get room by id: {}", id);
@@ -50,12 +52,25 @@ public class RoomController {
         }
     }
 
-    @DeleteMapping("room/{id}/delete")
+    //funkar
+    @PostMapping("/delete/{id}")
+    public String deleteRoom(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        String message = roomService.deleteRoom(id);
+        redirectAttributes.addFlashAttribute("deleteMessage", message);
+        return "redirect:/room/list";
+    }
+
+
+    /**
+    @DeleteMapping("room/{id}/delete") //TODO ta bort?
     public String deleteRoom (@PathVariable Long id) {
         log.info("Delete room by id: {}", id);
         return roomService.deleteRoom(id);
     }
 
+     */
+
+    //funkar
     @GetMapping("/add")
     public String showAddRoomForm(Model model) {
         model.addAttribute("room", new DetailedRoomDto());
@@ -63,6 +78,7 @@ public class RoomController {
         return "roomAddForm";
     }
 
+    //funkar
     @PostMapping("/add")
     public String addRoomSubmit(@Valid @ModelAttribute("room") DetailedRoomDto room,
                                 BindingResult bindingResult,
@@ -84,7 +100,7 @@ public class RoomController {
     }
 
 /**
-    @PostMapping("room/add") //TODO ÄNDRA/TA BORT
+    @PostMapping("room/add") //TODO TA BORT?
     public String addRoom(@RequestBody @Valid DetailedRoomDto room) {
         log.info("Added new room with id: {}", room.getId());
         return roomService.addRoom(room);
