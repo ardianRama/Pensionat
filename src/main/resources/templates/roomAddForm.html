@@ -13,6 +13,10 @@
     <p th:text="${serviceError}"></p>
   </div>
 
+  <div style="text-align: center; margin-top: 20px;">
+    <a href="/room/list" class="back-to-room-button" style="margin-left: 10px;">Back To Rooms</a>
+  </div>
+
   <form th:action="@{/room/add}" th:object="${room}" method="post">
 
     <label for="roomNumber">Room Number:</label><br />
@@ -31,8 +35,6 @@
 
     <button type="submit">Add Room</button>
   </form>
-
-  <p><a th:href="@{/room/list}">Back to Room List</a></p>
 </div>
 </body>
 </html>

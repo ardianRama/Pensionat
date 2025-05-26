@@ -83,7 +83,7 @@ public class RoomController {
         if (validationError != null) {
             model.addAttribute("roomTypes", RoomType.values());
             model.addAttribute("serviceError", validationError);
-            return "roomAddForm";  // visa formuläret igen med felmeddelande
+            return "roomAddForm";
         }
 
         return "redirect:/room/list";
@@ -128,19 +128,39 @@ public class RoomController {
         return "redirect:/room/list";
     }
 
-    //RestController
+    //RestController, ta inte bort än förrän controller varianten är klar
     //@PutMapping("room/{id}/update")
     //public String updateRoom(@PathVariable Long id, @RequestBody DetailedRoomDto roomDto) { //ingen @Valid behövs
       //  log.info("Update room with id: {}", id);
         //return roomService.updateRoom(id, roomDto);
     //}
 
-    //http://localhost:8080/room/search?checkIn=2025-05-20&checkOut=2025-05-28&guests=4
-    @GetMapping("room/search")
-    public List<RoomAvailableStat> searchAvailableRooms(@RequestParam("checkIn") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkIn,
-                                                        @RequestParam("checkOut") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkOut,
-                                                        @RequestParam("guests") int numberOfGuests) {
-        return roomService.searchAvailableRooms(checkIn, checkOut, numberOfGuests);
+    //funkar
+    @GetMapping("/search")
+    public String showSearchForm() {
+        return "roomSearch";
+    }
+
+    //funkar
+    @GetMapping(value = "/search", params = {"checkIn", "checkOut", "guests"})
+    public String searchAvailableRooms(@RequestParam("checkIn") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkIn,
+                                       @RequestParam("checkOut") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkOut,
+                                       @RequestParam("guests") int numberOfGuests,
+                                       Model model) {
+
+        List<RoomAvailableStat> results = roomService.searchAvailableRooms(checkIn, checkOut, numberOfGuests);
+
+        if (results.isEmpty()) {
+            model.addAttribute("noResults", "No available rooms found for the selected dates and number of guests.");
+        } else {
+            model.addAttribute("availableRooms", results);
+        }
+
+        model.addAttribute("checkIn", checkIn);
+        model.addAttribute("checkOut", checkOut);
+        model.addAttribute("guests", numberOfGuests);
+
+        return "roomSearch";
     }
 
 }
