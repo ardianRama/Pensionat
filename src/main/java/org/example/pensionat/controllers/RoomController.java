@@ -2,6 +2,7 @@ package org.example.pensionat.controllers;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.example.pensionat.models.RoomType;
 import org.example.pensionat.service.RoomService;
 import org.example.pensionat.dtos.DetailedRoomDto;
 import org.example.pensionat.dtos.RoomAvailableStat;
@@ -11,6 +12,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -54,11 +56,40 @@ public class RoomController {
         return roomService.deleteRoom(id);
     }
 
-    @PostMapping("room/add")
+    @GetMapping("/add")
+    public String showAddRoomForm(Model model) {
+        model.addAttribute("room", new DetailedRoomDto());
+        model.addAttribute("roomTypes", RoomType.values());  // Om du vill visa en dropdown med rumstyper
+        return "roomAddForm";
+    }
+
+    @PostMapping("/add")
+    public String addRoomSubmit(@Valid @ModelAttribute("room") DetailedRoomDto room,
+                                BindingResult bindingResult,
+                                Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("roomTypes", RoomType.values());
+            return "roomAddForm";
+        }
+
+        String validationError = roomService.addRoom(room);
+
+        if (validationError != null) {
+            model.addAttribute("roomTypes", RoomType.values());
+            model.addAttribute("serviceError", validationError);
+            return "roomAddForm";  // visa formuläret igen med felmeddelande
+        }
+
+        return "redirect:/room/list";
+    }
+
+/**
+    @PostMapping("room/add") //TODO ÄNDRA/TA BORT
     public String addRoom(@RequestBody @Valid DetailedRoomDto room) {
         log.info("Added new room with id: {}", room.getId());
         return roomService.addRoom(room);
     }
+ */
 
     @PutMapping("room/{id}/update")
     public String updateRoom(@PathVariable Long id, @RequestBody DetailedRoomDto roomDto) { //ingen @Valid behövs
