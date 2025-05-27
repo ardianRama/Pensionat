@@ -49,7 +49,7 @@ public class RoomServiceImpl implements RoomService {
                 .type(r.getRoomType())
                 .baseCapacity(r.getBaseCapacity())
                 .maxExtraBeds(r.getMaxExtraBeds())
-                .build(); // inga myBookings
+                .build();
     }
 
     @Override
