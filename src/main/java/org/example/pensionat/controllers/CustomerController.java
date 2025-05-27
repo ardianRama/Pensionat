@@ -7,90 +7,77 @@ import org.example.pensionat.dtos.DetailedCustomerDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Optional;
-
-@RestController
+//..
+@Controller
 @RequiredArgsConstructor
+@RequestMapping("/customer")
 public class CustomerController {
 
     private static final Logger log = LoggerFactory.getLogger(RoomController.class);
 
     private final CustomerService customerService;
 
-    @GetMapping("customer")
-    public List<DetailedCustomerDto> getAllCustomers() {
+    //funkar
+    @GetMapping("/list")
+    public String getAllCustomers(Model model) {
         log.info("Get all customers");
-        return customerService.getAllDetailedCustomer();
+        model.addAttribute("customers", customerService.getAllDetailedCustomer());
+        return "customer/customerList";
     }
 
-    @GetMapping("customer/{id}")
-    public ResponseEntity<DetailedCustomerDto> getCustomerById(@PathVariable Long id) {
-        Optional<DetailedCustomerDto> dto = customerService.getDetailedCustomerById(id);
-        log.info("Get customer by id: {}", id);
-        return dto.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build()); //mappa om till ResponseEntity
-    }
-
-    @DeleteMapping("customer/{id}/delete")
-    public String deleteCustomer(@PathVariable Long id) {
-        log.info("Delete customer by id: {}", id);
-        return customerService.deleteCustomer(id);
-    }
-
-    @PostMapping("customer/add")
-    public String addCustomer (@RequestBody @Valid DetailedCustomerDto customer) {
-        log.info("Added new customer with id: {}", customer.getId());
-        return customerService.addCustomer(customer);
-    }
-
-    @PutMapping("customer/{id}/update")
-    public String updateCustomer(@PathVariable Long id, @RequestBody DetailedCustomerDto customerDto) {
-        log.info("Update customer with id: {}", id);
-        return customerService.updateCustomer(id, customerDto);
-    }
-
-
-    /**
-
-    /*
-    private final CustomerRepository customerRepository;
-    CustomerController(CustomerRepository customerRepository){
-        this.customerRepository = customerRepository;
-    }
-     */
-
-    /**
-
-    @Autowired
-    private final CustomerService customerService;
-    CustomerController(CustomerService customerService){
-        this.customerService = customerService;
-    }
-
-    @GetMapping("/register")
-    public String Register(Model model) {
-        model.addAttribute("customer", new Customer());
-        return "register";
-    }
-
-
-    @PostMapping("/register")
-    public String handleRegister(@RequestParam String username,
-                                 @RequestParam String password,
-                                 @RequestParam String name,
-                                 @RequestParam String email,
-                                 @RequestParam String phoneNumber,
-                                 @RequestParam String address,
-                                 Model model) {
-        if (customerService.existsUsername(username)) {
-            model.addAttribute("eror", "Username is already in use");
-            return "register";
-        } else {
-            customerService.registerUsername(username, password, name, email, phoneNumber, address);
-            return "redirect:/login";
+    //funkar
+    @GetMapping("/{id}")
+    public String showCustomerDetails(@PathVariable Long id, Model model) {
+        Optional<DetailedCustomerDto> optionalCustomer = customerService.getDetailedCustomerById(id);
+        if (optionalCustomer.isEmpty()) {
+            model.addAttribute("serviceError", "Customer not found.");
+            return "redirect:/customer/list";
         }
+
+        model.addAttribute("customer", optionalCustomer.get());
+        return "customer/customerDetails";
     }
-     */
+
+    //funkar men får inte fram meddelande
+    @GetMapping("/{id}/delete")
+    public String deleteCustomer(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        String message = customerService.deleteCustomer(id);
+        redirectAttributes.addAttribute("message", message);
+        return "redirect:/customer/list";
+    }
+
+    //funkar
+    @GetMapping("/add")
+    public String showAddCustomerForm(Model model) {
+        model.addAttribute("detailedCustomerDto", new DetailedCustomerDto());
+        return "customer/addCustomer";
+    }
+
+    //funkar
+    @PostMapping("/add")
+    public String addCustomer(@Valid @ModelAttribute("detailedCustomerDto") DetailedCustomerDto detailedCustomerDto,
+                              BindingResult bindingResult,
+                              RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            return "customer/addCustomer";  // returnera till formuläret med felmeddelanden
+        }
+        String message = customerService.addCustomer(detailedCustomerDto);
+        redirectAttributes.addFlashAttribute("message", message);
+        return "redirect:/customer/list";
+    }
+
+    //RestController, behöver göras om
+    //@PutMapping("customer/{id}/update")
+    //public String updateCustomer(@PathVariable Long id, @RequestBody DetailedCustomerDto customerDto) {
+      //  log.info("Update customer with id: {}", id);
+        //return customerService.updateCustomer(id, customerDto);
+    //}
 }
