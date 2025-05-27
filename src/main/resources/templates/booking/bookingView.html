@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Booking Details</title>
+  <link rel="stylesheet" th:href="@{/css/styles.css}" />
+</head>
+<body>
+
+<h1>Booking Details</h1>
+
+<div style="text-align: center; margin-top: 20px;">
+  <a href="/booking/list" class="back-button">← Back to Booking List</a>
+</div>
+
+<table>
+  <tr><th>ID:</th><td th:text="${booking.id}">1</td></tr>
+  <tr><th>Check-In:</th><td th:text="${booking.checkIn}">2025-06-01</td></tr>
+  <tr><th>Check-Out:</th><td th:text="${booking.checkOut}">2025-06-05</td></tr>
+  <tr><th>Number of Guests:</th><td th:text="${booking.numberOfGuests}">2</td></tr>
+  <tr><th>Extra Beds:</th><td th:text="${booking.extraBeds}">1</td></tr>
+  <tr><th>Customer ID:</th><td th:text="${booking.customer.id}">100</td></tr>
+  <tr><th>Room ID:</th><td th:text="${booking.room.id}">10</td></tr>
+</table>
+
+</body>
+</html>

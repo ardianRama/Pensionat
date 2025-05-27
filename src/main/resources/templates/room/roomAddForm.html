@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <title>Add New Room</title>
+  <link rel="stylesheet" th:href="@{/css/styles.css}" />
+</head>
+<body>
+<div class="form-container">
+  <h1>Add New Room</h1>
+
+
+  <div th:if="${serviceMessage}" class="message" style="color: green;">
+    <p th:text="${serviceMessage}"></p>
+  </div>
+
+  <div th:if="${serviceError}" class="error-message" style="color: red;">
+    <p th:text="${serviceError}"></p>
+  </div>
+
+  <div style="text-align: center; margin-top: 20px;">
+    <a href="/room/list" class="back-to-room-button" style="margin-left: 10px;">Back To Rooms</a>
+  </div>
+
+  <form th:action="@{/room/add}" th:object="${room}" method="post">
+
+    <label for="roomNumber">Room Number:</label><br />
+    <input type="number" id="roomNumber" th:field="*{roomNumber}" min="1" required /><br />
+
+    <label for="roomType">Room Type:</label><br />
+    <select id="roomType" th:field="*{roomType}" required>
+      <option th:each="type : ${roomTypes}" th:value="${type}" th:text="${type}">Single</option>
+    </select><br />
+
+    <label for="baseCapacity">Base Capacity:</label><br />
+    <input type="number" id="baseCapacity" th:field="*{baseCapacity}" min="1" max="2" required /><br />
+
+    <label for="maxExtraBeds">Max Extra Beds:</label><br />
+    <input type="number" id="maxExtraBeds" th:field="*{maxExtraBeds}" min="0" max="2" required /><br />
+
+    <button type="submit">Add Room</button>
+  </form>
+</div>
+</body>
+</html>

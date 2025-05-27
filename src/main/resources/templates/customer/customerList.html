@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Customer List</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+</head>
+<body>
+
+<h1>All Customers</h1>
+
+<div th:if="${message}" class="message delete-message" th:text="${message}"></div>
+
+<div style="text-align: center; margin-bottom: 20px;">
+    <a href="/customer/add">➕ Add Customer</a>
+</div>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Address</th>
+        <th>Bookings</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="customer : ${customers}">
+        <td th:text="${customer.id}">1</td>
+        <td th:text="${customer.name}">Name</td>
+        <td th:text="${customer.email}">Email</td>
+        <td th:text="${customer.phoneNumber}">Phone</td>
+        <td th:text="${customer.address}">Address</td>
+        <td th:text="${customer.myBookings.size()} + ' bookings'">0 bookings</td>
+        <td>
+            <a th:href="@{'/customer/' + ${customer.id}}">View</a> |
+            <a th:href="@{'/customer/' + ${customer.id} + '/delete'}"
+               class="delete-button"
+               onclick="return confirm('Are you sure you want to delete this customer?');">Delete</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
+
+

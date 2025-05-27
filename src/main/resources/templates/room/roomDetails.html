@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Room Details</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+</head>
+<body>
+
+<div class="room-details">
+
+    <h1>Room Details - Room #[[${room.roomNumber}]]</h1>
+
+    <div class="room-info">
+        <h2>Room Information</h2>
+        <p><strong>ID:</strong> <span th:text="${room.id}">1</span></p>
+        <p><strong>Room Type:</strong> <span th:text="${room.roomType}">DOUBLE</span></p>
+        <p><strong>Base Capacity:</strong> <span th:text="${room.baseCapacity}">2</span></p>
+        <p><strong>Max Extra Beds:</strong> <span th:text="${room.maxExtraBeds}">1</span></p>
+    </div>
+
+    <div class="booking-info" th:if="${room.myBookings != null and !#lists.isEmpty(room.myBookings)}">
+        <h2>Bookings</h2>
+        <div th:each="booking, iterStat : ${room.myBookings}" class="booking-item">
+            <p><strong>Booking #[[${iterStat.index + 1}]]</strong></p>
+            <p><strong>Check-in:</strong> <span th:text="${booking.checkIn}">2025-05-20</span></p>
+            <p><strong>Check-out:</strong> <span th:text="${booking.checkOut}">2025-05-25</span></p>
+            <p><strong>Extra Beds:</strong> <span th:text="${booking.extraBeds}">1</span></p>
+            <p><strong>Number of Guests:</strong> <span th:text="${booking.numberOfGuests}">2</span></p>
+        </div>
+    </div>
+
+
+    <div th:if="${room.myBookings == null or #lists.isEmpty(room.myBookings)}">
+        <p>No bookings for this room.</p>
+    </div>
+
+    <p><a th:href="@{/room/list}">Back to all rooms</a></p>
+
+</div>
+
+</body>
+</html>
+
