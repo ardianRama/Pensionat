@@ -63,7 +63,7 @@ public class RoomController {
     @GetMapping("/add")
     public String showAddRoomForm(Model model) {
         model.addAttribute("room", new DetailedRoomDto());
-        model.addAttribute("roomTypes", RoomType.values());  // Om du vill visa en dropdown med rumstyper
+        model.addAttribute("roomTypes", RoomType.values());
         return "room/roomAddForm";
     }
 

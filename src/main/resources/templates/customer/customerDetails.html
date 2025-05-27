@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Customer Details</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+
+<div class="room-details">
+
+    <div class="room-info">
+        <h2>Customer Information</h2>
+        <p><strong>Name:</strong> <span th:text="${customer.name}">John Doe</span></p>
+        <p><strong>Email:</strong> <span th:text="${customer.email}">john@example.com</span></p>
+        <p><strong>Phone:</strong> <span th:text="${customer.phoneNumber}">+46701234567</span></p>
+        <p><strong>Address:</strong> <span th:text="${customer.address}">Main Street 1</span></p>
+        <p><strong>Total Bookings:</strong> <span th:text="${customer.myBookings.size()}">0</span></p>
+    </div>
+
+    <div class="booking-info" th:if="${customer.myBookings != null and !customer.myBookings.isEmpty()}">
+        <h2>Bookings</h2>
+
+        <div th:each="booking, iterStat : ${customer.myBookings}" class="booking-item">
+            <p><strong>Booking #</strong><span th:text="${iterStat.index + 1}">1</span></p>
+            <p><strong>Check-in:</strong> <span th:text="${booking.checkIn}">2025-06-23</span></p>
+            <p><strong>Check-out:</strong> <span th:text="${booking.checkOut}">2025-07-03</span></p>
+            <p><strong>Extra Beds:</strong> <span th:text="${booking.extraBeds}">0</span></p>
+            <p><strong>Number of Guests:</strong> <span th:text="${booking.numberOfGuests}">1</span></p>
+        </div>
+    </div>
+
+    <div class="booking-info" th:if="${customer.myBookings == null or customer.myBookings.isEmpty()}">
+        <p>This customer has no bookings.</p>
+    </div>
+
+    <a href="/customer/list">← Back to Customer List</a>
+
+</div>
+
+</body>
+</html>
+
+
+

@@ -89,7 +89,7 @@ public class BookingController {
     }
 
 
-    //@RestController!!, måste göras om + TODO testa
+    //@RestController!, behöver göras om
     @PutMapping("/booking/{id}/update")
     public ResponseEntity<String> updateBooking(@PathVariable Long id,
                                                 @RequestBody @Valid DetailedBookingDto bookingDto) {
