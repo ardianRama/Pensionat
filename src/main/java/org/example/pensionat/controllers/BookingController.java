@@ -2,6 +2,9 @@ package org.example.pensionat.controllers;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.example.pensionat.dtos.DetailedRoomDto;
+import org.example.pensionat.dtos.RoomDto;
+import org.example.pensionat.models.RoomType;
 import org.example.pensionat.service.BookingService;
 import org.example.pensionat.dtos.DetailedBookingDto;
 import org.example.pensionat.service.CustomerService;
@@ -17,6 +20,7 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -25,7 +29,7 @@ public class BookingController {
 
     private static final Logger log = LoggerFactory.getLogger(BookingController.class);
 
-    private final BookingService bookingService;
+    private final BookingService    bookingService;
     private final CustomerService customerService;
     private final RoomService roomService;
 
@@ -58,8 +62,30 @@ public class BookingController {
     public String addBookingSubmit(@Valid @ModelAttribute("booking") DetailedBookingDto bookingDto,
                                    BindingResult bindingResult,
                                    Model model) {
+
         model.addAttribute("customers", customerService.getAllDetailedCustomer());
         model.addAttribute("rooms", roomService.getAllDetailedRooms());
+
+        if (bookingDto.getRoom() != null && bookingDto.getRoom().getId() != null) {
+            Optional<DetailedRoomDto> optionalRoom = roomService.getDetailedRoomById(bookingDto.getRoom().getId());
+
+            if (optionalRoom.isPresent()) {
+                DetailedRoomDto selected = optionalRoom.get();
+                RoomType roomType = selected.getRoomType();
+
+                if (roomType == RoomType.SINGLEROOM && bookingDto.getExtraBeds() > 0) {
+                    bindingResult.rejectValue("extraBeds", "extraBeds.invalid", "Extrasängar är inte tillåtna i singelrum.");
+                }
+
+                if (roomType == RoomType.DOUBLEROOM && (bookingDto.getExtraBeds() < 0 || bookingDto.getExtraBeds() > 2)) {
+                    bindingResult.rejectValue("extraBeds", "extraBeds.invalid", "Antal extrasängar i dubbelrum måste vara mellan 0 och 2.");
+                }
+            } else {
+                bindingResult.rejectValue("room.id", "room.invalid", "Valt rum existerar inte.");
+            }
+        } else {
+            bindingResult.rejectValue("room", "room.invalid", "Du måste välja ett rum.");
+        }
 
         if (bindingResult.hasErrors()) {
             return "booking/bookingAddForm";
@@ -77,6 +103,7 @@ public class BookingController {
 
         return "booking/bookingAddForm";
     }
+
 
     @PostMapping("/{id}/delete")
     public String deleteBooking(@PathVariable Long id, RedirectAttributes redirectAttributes) {

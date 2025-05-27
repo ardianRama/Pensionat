@@ -19,7 +19,7 @@ public interface CustomerService {
 
     public Optional<DetailedCustomerDto> getDetailedCustomerById(Long id);
 
-    public String deleteCustomer(Long id);
+    public boolean deleteCustomer(Long id);
 
     public String addCustomer(DetailedCustomerDto customerdto);
 

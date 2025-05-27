@@ -42,11 +42,14 @@ public class CustomerController {
         return "customer/customerDetails";
     }
 
-    //*
     @GetMapping("/{id}/delete")
     public String deleteCustomer(@PathVariable Long id, RedirectAttributes redirectAttributes) {
-        String message = customerService.deleteCustomer(id);
-        redirectAttributes.addAttribute("message", message);
+        boolean customerDeleted = customerService.deleteCustomer(id);
+        if (customerDeleted){
+            redirectAttributes.addFlashAttribute("message","Customer deleted successfully.");
+        } else {
+            redirectAttributes.addFlashAttribute("error","Customer cannot be deleted with an active booking.");
+        }
         return "redirect:/customer/list";
     }
 

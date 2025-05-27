@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.example.pensionat.models.RoomType;
 
 import java.time.LocalDate;
 
@@ -29,7 +30,7 @@ public class DetailedBookingDto {
     private int extraBeds;
 
     @Min(value = 1, message = "Minimum 1 guest")
-    @Max(value = 2, message = "Up to 4 guest depending on room type and size")
+    @Max(value = 4, message = "Up to 4 guest depending on room type and size")
     private int numberOfGuests;
 
     @NotNull(message = "Customer is required")
@@ -37,4 +38,6 @@ public class DetailedBookingDto {
 
     @NotNull(message = "Room is required")
     private RoomDto room;
+
+    private RoomType type;
 }

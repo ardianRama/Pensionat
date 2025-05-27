@@ -51,17 +51,17 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public String deleteCustomer(Long id) {
+    public boolean deleteCustomer(Long id) {
         Optional<Customer> optionalCustomer = customerRepository.findById(id);
         if (optionalCustomer.isPresent()) {
             Customer customer = optionalCustomer.get();
             if(customer.getMyBookings() != null && !customer.getMyBookings().isEmpty()) {
-                return "Cannot delete customer with id " + id + " because it has existing bookings.";
+                return false;
             }
             customerRepository.delete(customer);
-            return "Customer with id " + id + " has been deleted.";
+            return true;
         } else {
-            return "Customer with id " + id + " does not exist.";
+            return false;
         }
     }
 
