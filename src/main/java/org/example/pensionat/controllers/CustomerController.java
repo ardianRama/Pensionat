@@ -61,7 +61,7 @@ public class CustomerController {
                               BindingResult bindingResult,
                               RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
-            return "customer/addCustomer";  // returnera till formuläret med felmeddelanden
+            return "customer/addCustomer";
         }
         String message = customerService.addCustomer(detailedCustomerDto);
         redirectAttributes.addFlashAttribute("message", message);
