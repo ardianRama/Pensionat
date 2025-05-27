@@ -9,6 +9,11 @@
 
 <h1>Edit Booking</h1>
 
+<div th:if="${errorMessage}" style="color: red; margin-bottom: 1em;">
+  <p th:text="${errorMessage}"></p>
+</div>
+
+
 <form th:action="@{'/booking/' + ${booking.id} + '/update'}" th:object="${booking}" method="post">
 
   <div>

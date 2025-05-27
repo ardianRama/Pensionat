@@ -90,6 +90,7 @@ public class BookingController {
         return "redirect:/booking/list";
     }
 
+    //funkar
     @GetMapping("/{id}/edit")
     public String showEditBookingForm(@PathVariable Long id, Model model) {
         try {
@@ -102,16 +103,14 @@ public class BookingController {
         }
     }
 
+    //funkar men extra beds går inte att ändra
     @PostMapping("/{id}/update")
-    public String updateBooking(
-            @PathVariable Long id,
-            @ModelAttribute("booking") @Valid DetailedBookingDto bookingDto,
-            BindingResult bindingResult,
-            RedirectAttributes redirectAttributes,
-            Model model) {
-
+    public String updateBooking(@PathVariable Long id,
+                                @ModelAttribute("booking") @Valid DetailedBookingDto bookingDto,
+                                BindingResult bindingResult,
+                                RedirectAttributes redirectAttributes,
+                                Model model) {
         if (bindingResult.hasErrors()) {
-            // Valideringsfel: visa formuläret igen med felmeddelanden
             model.addAttribute("rooms", roomService.getAllDetailedRooms());
             return "booking/editBookingForm";
         }
@@ -121,12 +120,12 @@ public class BookingController {
             redirectAttributes.addFlashAttribute("message", message);
             return "redirect:/booking/list";
         } catch (RuntimeException e) {
-            // Fel i service-lagret (t.ex. rum upptaget)
             model.addAttribute("rooms", roomService.getAllDetailedRooms());
             model.addAttribute("errorMessage", e.getMessage());
             return "booking/editBookingForm";
         }
     }
+
 
 
 
