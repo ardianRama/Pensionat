@@ -54,58 +54,17 @@ public class CustomerController {
     }
 
 
+    //RestController
     @PostMapping("customer/add")
     public String addCustomer (@RequestBody @Valid DetailedCustomerDto customer) {
         log.info("Added new customer with id: {}", customer.getId());
         return customerService.addCustomer(customer);
     }
 
+    //RestController
     @PutMapping("customer/{id}/update")
     public String updateCustomer(@PathVariable Long id, @RequestBody DetailedCustomerDto customerDto) {
         log.info("Update customer with id: {}", id);
         return customerService.updateCustomer(id, customerDto);
     }
-
-
-    /**
-
-    /*
-    private final CustomerRepository customerRepository;
-    CustomerController(CustomerRepository customerRepository){
-        this.customerRepository = customerRepository;
-    }
-     */
-
-    /**
-
-    @Autowired
-    private final CustomerService customerService;
-    CustomerController(CustomerService customerService){
-        this.customerService = customerService;
-    }
-
-    @GetMapping("/register")
-    public String Register(Model model) {
-        model.addAttribute("customer", new Customer());
-        return "register";
-    }
-
-
-    @PostMapping("/register")
-    public String handleRegister(@RequestParam String username,
-                                 @RequestParam String password,
-                                 @RequestParam String name,
-                                 @RequestParam String email,
-                                 @RequestParam String phoneNumber,
-                                 @RequestParam String address,
-                                 Model model) {
-        if (customerService.existsUsername(username)) {
-            model.addAttribute("eror", "Username is already in use");
-            return "register";
-        } else {
-            customerService.registerUsername(username, password, name, email, phoneNumber, address);
-            return "redirect:/login";
-        }
-    }
-     */
 }
