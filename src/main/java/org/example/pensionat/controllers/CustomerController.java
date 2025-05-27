@@ -61,7 +61,7 @@ public class CustomerController {
         return "customer/addCustomer";
     }
 
-    //funkar
+    //funkar..
     @PostMapping("/add")
     public String addCustomer(@Valid @ModelAttribute("detailedCustomerDto") DetailedCustomerDto detailedCustomerDto,
                               BindingResult bindingResult,
@@ -74,6 +74,7 @@ public class CustomerController {
         return "redirect:/customer/list";
     }
 
+    //funkar
     @GetMapping("/{id}/edit")
     public String showUpdateForm(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
         Optional<DetailedCustomerDto> optionalCustomer = customerService.getDetailedCustomerById(id);
@@ -86,6 +87,7 @@ public class CustomerController {
         }
     }
 
+    //funkar
     @PostMapping("/{id}/update")
     public String updateCustomer(@PathVariable Long id,
                                  @ModelAttribute("customer") @Valid DetailedCustomerDto customerDto,
