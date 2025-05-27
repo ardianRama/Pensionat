@@ -102,16 +102,13 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public String updateBooking(Long id, DetailedBookingDto updatedBookingDto) {
 
-        //hitta bokning som ska uppdateras
         Booking existingBooking = bookingRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Booking not found with id: " + id));
 
-        //så att kunden inte byts ut
         if (!existingBooking.getCustomer().getId().equals(updatedBookingDto.getCustomer().getId())) {
             throw new RuntimeException("Customer cannot be changed on an existing booking.");
         }
 
-        //kolla att rummet är ledigt under det nya datumet
         List<Booking> overlapping = bookingRepository.findOverlappingBookings(
                 updatedBookingDto.getRoom().getId(),
                 updatedBookingDto.getCheckIn(),
@@ -122,7 +119,6 @@ public class BookingServiceImpl implements BookingService {
             throw new RuntimeException("Room is already booked during the selected dates.");
         }
 
-        //hämtar nya eller samma rum
         Room room = roomRepository.findById(updatedBookingDto.getRoom().getId())
                 .orElseThrow(() -> new RuntimeException("Room not found"));
 
@@ -135,10 +131,4 @@ public class BookingServiceImpl implements BookingService {
         bookingRepository.save(existingBooking);
         return "Booking updated successfully";
     }
-
-    //@Override
-    //public Booking dtoBookingToEntityBooking(BookingDto b) {
-      //  return Booking.builder().checkIn(b.getCheckIn()).checkOut(b.getCheckOut()).extraBeds(b.getExtraBeds())
-        //        .numberOfGuests(b.getNumberOfGuests()).build();
-    //}
 }

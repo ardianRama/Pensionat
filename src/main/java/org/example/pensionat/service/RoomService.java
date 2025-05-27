@@ -17,10 +17,6 @@ public interface RoomService {
 
     public RoomAvailableStat entityRoomToRoomAvailableStatDto(Room room);
 
-    //komplett med booking, behövs nog inte
-    //public Room dtoDetailedRoomToEntityRoom(DetailedRoomDto room);
-
-    //Ingen booking
     public Room dtoDetailedRoomToEntityRoom(DetailedRoomDto roomDto);
 
     public List<DetailedRoomDto> getAllDetailedRooms();

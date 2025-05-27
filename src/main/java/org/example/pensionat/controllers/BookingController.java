@@ -9,7 +9,6 @@ import org.example.pensionat.service.RoomService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -30,7 +29,6 @@ public class BookingController {
     private final CustomerService customerService;
     private final RoomService roomService;
 
-    //funkar
     @GetMapping("/list")
     public String getAllBookings(Model model) {
         log.info("Get all bookings");
@@ -39,7 +37,6 @@ public class BookingController {
         return "booking/bookingList";
     }
 
-    //funkar
     @GetMapping("/{id}")
     public String getBookingById(@PathVariable Long id, Model model) {
         log.info("Get booking with id {}", id);
@@ -48,7 +45,6 @@ public class BookingController {
         return "booking/bookingView";
     }
 
-    //funkar
     @GetMapping("/add")
     public String showAddBookingForm(Model model) {
         model.addAttribute("booking", new DetailedBookingDto());
@@ -57,7 +53,7 @@ public class BookingController {
         return "booking/bookingAddForm";
     }
 
-    //funkar (men inte 100% validering för rummen pga ej kustomiserad validering)
+    //*
     @PostMapping("/add")
     public String addBookingSubmit(@Valid @ModelAttribute("booking") DetailedBookingDto bookingDto,
                                    BindingResult bindingResult,
@@ -82,7 +78,6 @@ public class BookingController {
         return "booking/bookingAddForm";
     }
 
-    //funkar
     @PostMapping("/{id}/delete")
     public String deleteBooking(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         String message = bookingService.cancelBooking(id);
@@ -90,20 +85,19 @@ public class BookingController {
         return "redirect:/booking/list";
     }
 
-    //funkar
     @GetMapping("/{id}/edit")
     public String showEditBookingForm(@PathVariable Long id, Model model) {
         try {
             DetailedBookingDto booking = bookingService.getDetailedBookingById(id);
             model.addAttribute("booking", booking);
-            model.addAttribute("rooms", roomService.getAllDetailedRooms()); // för dropdown val av rum
-            return "booking/editBookingForm"; // Thymeleaf template
+            model.addAttribute("rooms", roomService.getAllDetailedRooms());
+            return "booking/editBookingForm";
         } catch (RuntimeException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
 
-    //funkar men extra beds går inte att ändra
+    //*
     @PostMapping("/{id}/update")
     public String updateBooking(@PathVariable Long id,
                                 @ModelAttribute("booking") @Valid DetailedBookingDto bookingDto,
@@ -125,15 +119,4 @@ public class BookingController {
             return "booking/editBookingForm";
         }
     }
-
-
-
-
-    //@RestController!, behöver göras om.
-    //@PutMapping("/booking/{id}/update")
-    //public ResponseEntity<String> updateBooking(@PathVariable Long id,
-      //                                          @RequestBody @Valid DetailedBookingDto bookingDto) {
-        //return ResponseEntity.ok(bookingService.updateBooking(id, bookingDto));
-    //}
-
 }

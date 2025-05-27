@@ -42,7 +42,7 @@ public class CustomerController {
         return "customer/customerDetails";
     }
 
-    //funkar men får inte fram meddelande
+    //*
     @GetMapping("/{id}/delete")
     public String deleteCustomer(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         String message = customerService.deleteCustomer(id);
