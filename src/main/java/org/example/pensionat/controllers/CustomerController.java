@@ -74,6 +74,34 @@ public class CustomerController {
         return "redirect:/customer/list";
     }
 
+    @GetMapping("/{id}/edit")
+    public String showUpdateForm(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
+        Optional<DetailedCustomerDto> optionalCustomer = customerService.getDetailedCustomerById(id);
+        if (optionalCustomer.isPresent()) {
+            model.addAttribute("customer", optionalCustomer.get());
+            return "customer/updateCustomerForm";
+        } else {
+            redirectAttributes.addFlashAttribute("message", "Customer not found.");
+            return "redirect:/customer/list";
+        }
+    }
+
+    @PostMapping("/{id}/update")
+    public String updateCustomer(@PathVariable Long id,
+                                 @ModelAttribute("customer") @Valid DetailedCustomerDto customerDto,
+                                 BindingResult bindingResult,
+                                 RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            return "customer/updateCustomerForm";
+        }
+
+        String result = customerService.updateCustomer(id, customerDto);
+        redirectAttributes.addFlashAttribute("message", result);
+        return "redirect:/customer/list";
+    }
+
+
+
     //RestController, behöver göras om
     //@PutMapping("customer/{id}/update")
     //public String updateCustomer(@PathVariable Long id, @RequestBody DetailedCustomerDto customerDto) {
