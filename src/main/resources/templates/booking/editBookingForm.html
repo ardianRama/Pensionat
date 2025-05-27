@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <title>Edit Booking</title>
+  <link rel="stylesheet" th:href="@{/css/styles.css}" />
+</head>
+<body>
+
+<h1>Edit Booking</h1>
+
+<form th:action="@{'/booking/' + ${booking.id} + '/update'}" th:object="${booking}" method="post">
+
+  <div>
+    <label>Customer ID:</label>
+    <input type="text" th:field="*{customer.id}" readonly />
+  </div>
+
+  <div>
+    <label>Check-in Date:</label>
+    <input type="date" th:field="*{checkIn}" required />
+  </div>
+
+  <div>
+    <label>Check-out Date:</label>
+    <input type="date" th:field="*{checkOut}" required />
+  </div>
+
+  <div>
+    <label>Number of Guests:</label>
+    <input type="number" th:field="*{numberOfGuests}" min="1" required />
+  </div>
+
+  <div>
+    <label>Extra Beds:</label>
+    <input type="number" th:field="*{extraBeds}" min="0" />
+  </div>
+
+  <div>
+    <label>Room ID:</label>
+    <select th:field="*{room.id}" required>
+      <option th:each="room : ${rooms}" th:value="${room.id}" th:text="${room.id}"></option>
+    </select>
+  </div>
+
+  <div style="margin-top: 20px;">
+    <button type="submit">Save Changes</button>
+    <a href="/booking/list" style="margin-left: 10px;">Cancel</a>
+  </div>
+
+</form>
+
+</body>
+</html>
+

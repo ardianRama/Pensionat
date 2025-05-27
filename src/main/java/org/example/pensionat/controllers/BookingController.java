@@ -8,11 +8,13 @@ import org.example.pensionat.service.CustomerService;
 import org.example.pensionat.service.RoomService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -88,12 +90,51 @@ public class BookingController {
         return "redirect:/booking/list";
     }
 
+    @GetMapping("/{id}/edit")
+    public String showEditBookingForm(@PathVariable Long id, Model model) {
+        try {
+            DetailedBookingDto booking = bookingService.getDetailedBookingById(id);
+            model.addAttribute("booking", booking);
+            model.addAttribute("rooms", roomService.getAllDetailedRooms()); // för dropdown val av rum
+            return "booking/editBookingForm"; // Thymeleaf template
+        } catch (RuntimeException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
+
+    @PostMapping("/{id}/update")
+    public String updateBooking(
+            @PathVariable Long id,
+            @ModelAttribute("booking") @Valid DetailedBookingDto bookingDto,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes,
+            Model model) {
+
+        if (bindingResult.hasErrors()) {
+            // Valideringsfel: visa formuläret igen med felmeddelanden
+            model.addAttribute("rooms", roomService.getAllDetailedRooms());
+            return "booking/editBookingForm";
+        }
+
+        try {
+            String message = bookingService.updateBooking(id, bookingDto);
+            redirectAttributes.addFlashAttribute("message", message);
+            return "redirect:/booking/list";
+        } catch (RuntimeException e) {
+            // Fel i service-lagret (t.ex. rum upptaget)
+            model.addAttribute("rooms", roomService.getAllDetailedRooms());
+            model.addAttribute("errorMessage", e.getMessage());
+            return "booking/editBookingForm";
+        }
+    }
+
+
 
     //@RestController!, behöver göras om.
-    @PutMapping("/booking/{id}/update")
-    public ResponseEntity<String> updateBooking(@PathVariable Long id,
-                                                @RequestBody @Valid DetailedBookingDto bookingDto) {
-        return ResponseEntity.ok(bookingService.updateBooking(id, bookingDto));
-    }
+    //@PutMapping("/booking/{id}/update")
+    //public ResponseEntity<String> updateBooking(@PathVariable Long id,
+      //                                          @RequestBody @Valid DetailedBookingDto bookingDto) {
+        //return ResponseEntity.ok(bookingService.updateBooking(id, bookingDto));
+    //}
 
 }
