@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Add Customer</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+</head>
+<body>
+
+<h1>Add New Customer</h1>
+
+<div style="text-align: center; margin-bottom: 20px;">
+    <a th:href="@{/customer/list}">← Back to customer list</a>
+</div>
+
+<form th:action="@{/customer/add}" th:object="${detailedCustomerDto}" method="post">
+    <label for="name">Name:</label>
+    <input type="text" id="name" th:field="*{name}" required />
+    <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="error-message"></div>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" th:field="*{email}" required />
+    <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error-message"></div>
+
+    <label for="phoneNumber">Phone Number:</label>
+    <input type="text" id="phoneNumber" th:field="*{phoneNumber}" required />
+    <div th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}" class="error-message"></div>
+
+    <label for="address">Address:</label>
+    <input type="text" id="address" th:field="*{address}" required />
+    <div th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="error-message"></div>
+
+    <input type="submit" value="Add Customer" />
+</form>
+
+</body>
+</html>

@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -53,18 +54,30 @@ public class CustomerController {
         return "redirect:/customer/list";
     }
 
-
-    //RestController
-    @PostMapping("customer/add")
-    public String addCustomer (@RequestBody @Valid DetailedCustomerDto customer) {
-        log.info("Added new customer with id: {}", customer.getId());
-        return customerService.addCustomer(customer);
+    //funkar
+    @GetMapping("/add")
+    public String showAddCustomerForm(Model model) {
+        model.addAttribute("detailedCustomerDto", new DetailedCustomerDto());
+        return "customer/addCustomer";
     }
 
-    //RestController
-    @PutMapping("customer/{id}/update")
-    public String updateCustomer(@PathVariable Long id, @RequestBody DetailedCustomerDto customerDto) {
-        log.info("Update customer with id: {}", id);
-        return customerService.updateCustomer(id, customerDto);
+    //funkar
+    @PostMapping("/add")
+    public String addCustomer(@Valid @ModelAttribute("detailedCustomerDto") DetailedCustomerDto detailedCustomerDto,
+                              BindingResult bindingResult,
+                              RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            return "customer/addCustomer";  // returnera till formuläret med felmeddelanden
+        }
+        String message = customerService.addCustomer(detailedCustomerDto);
+        redirectAttributes.addFlashAttribute("message", message);
+        return "redirect:/customer/list";
     }
+
+    //RestController, behöver göras om
+    //@PutMapping("customer/{id}/update")
+    //public String updateCustomer(@PathVariable Long id, @RequestBody DetailedCustomerDto customerDto) {
+      //  log.info("Update customer with id: {}", id);
+        //return customerService.updateCustomer(id, customerDto);
+    //}
 }
