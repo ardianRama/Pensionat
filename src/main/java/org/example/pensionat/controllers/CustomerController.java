@@ -6,16 +6,14 @@ import org.example.pensionat.service.CustomerService;
 import org.example.pensionat.dtos.DetailedCustomerDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.List;
 import java.util.Optional;
-//...
+
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/customer")
@@ -25,7 +23,6 @@ public class CustomerController {
 
     private final CustomerService customerService;
 
-    //funkar
     @GetMapping("/list")
     public String getAllCustomers(Model model) {
         log.info("Get all customers");
@@ -33,7 +30,6 @@ public class CustomerController {
         return "customer/customerList";
     }
 
-    //funkar
     @GetMapping("/{id}")
     public String showCustomerDetails(@PathVariable Long id, Model model) {
         Optional<DetailedCustomerDto> optionalCustomer = customerService.getDetailedCustomerById(id);
@@ -46,7 +42,7 @@ public class CustomerController {
         return "customer/customerDetails";
     }
 
-    //funkar men får inte fram meddelande
+    //*
     @GetMapping("/{id}/delete")
     public String deleteCustomer(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         String message = customerService.deleteCustomer(id);
@@ -54,14 +50,12 @@ public class CustomerController {
         return "redirect:/customer/list";
     }
 
-    //funkar
     @GetMapping("/add")
     public String showAddCustomerForm(Model model) {
         model.addAttribute("detailedCustomerDto", new DetailedCustomerDto());
         return "customer/addCustomer";
     }
 
-    //funkar..
     @PostMapping("/add")
     public String addCustomer(@Valid @ModelAttribute("detailedCustomerDto") DetailedCustomerDto detailedCustomerDto,
                               BindingResult bindingResult,
@@ -74,7 +68,6 @@ public class CustomerController {
         return "redirect:/customer/list";
     }
 
-    //funkar
     @GetMapping("/{id}/edit")
     public String showUpdateForm(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
         Optional<DetailedCustomerDto> optionalCustomer = customerService.getDetailedCustomerById(id);
@@ -87,7 +80,6 @@ public class CustomerController {
         }
     }
 
-    //funkar
     @PostMapping("/{id}/update")
     public String updateCustomer(@PathVariable Long id,
                                  @ModelAttribute("customer") @Valid DetailedCustomerDto customerDto,
@@ -101,13 +93,4 @@ public class CustomerController {
         redirectAttributes.addFlashAttribute("message", result);
         return "redirect:/customer/list";
     }
-
-
-
-    //RestController, behöver göras om
-    //@PutMapping("customer/{id}/update")
-    //public String updateCustomer(@PathVariable Long id, @RequestBody DetailedCustomerDto customerDto) {
-      //  log.info("Update customer with id: {}", id);
-        //return customerService.updateCustomer(id, customerDto);
-    //}
 }

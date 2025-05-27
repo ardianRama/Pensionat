@@ -25,11 +25,10 @@ public class Room {
     @Enumerated(EnumType.STRING)
     private RoomType type;
 
-    private int baseCapacity; //1 eller 2
+    private int baseCapacity;
 
-    private int maxExtraBeds; //0, 1 eller 2
+    private int maxExtraBeds;
 
-    //se hur många bookings ett rum har
     @OneToMany(mappedBy = "room")
     private List<Booking> myBookings;
 

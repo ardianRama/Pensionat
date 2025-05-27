@@ -28,12 +28,6 @@ public class Customer {
 
     private String address;
 
-    //avvakta
-    //private String username;
-
-    //avvakta lite med password
-    //private String password;
-
     @OneToMany(mappedBy = "customer")
     private List<Booking> myBookings;
 

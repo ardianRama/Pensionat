@@ -28,7 +28,6 @@ public class RoomController {
 
     private final RoomService roomService;
 
-    //funkar
     @GetMapping("/list")
     public String getAllRooms(Model model) {
         log.info("Get all rooms");
@@ -37,7 +36,6 @@ public class RoomController {
         return "room/roomList";
     }
 
-    //funkar
     @GetMapping("/view/{id}")
     public String getRoomById(@PathVariable Long id, Model model) {
         log.info("Get room by id: {}", id);
@@ -51,7 +49,6 @@ public class RoomController {
         }
     }
 
-    //funkar
     @PostMapping("/delete/{id}")
     public String deleteRoom(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         String message = roomService.deleteRoom(id);
@@ -59,7 +56,6 @@ public class RoomController {
         return "redirect:/room/list";
     }
 
-    //funkar
     @GetMapping("/add")
     public String showAddRoomForm(Model model) {
         model.addAttribute("room", new DetailedRoomDto());
@@ -67,7 +63,6 @@ public class RoomController {
         return "room/roomAddForm";
     }
 
-    //funkar
     @PostMapping("/add")
     public String addRoomSubmit(@Valid @ModelAttribute("room") DetailedRoomDto room,
                                 BindingResult bindingResult,
@@ -88,57 +83,11 @@ public class RoomController {
         return "redirect:/room/list";
     }
 
-    //funkar inte riktigt
-    @GetMapping("/update/{id}")
-    public String showUpdateForm(@PathVariable Long id, Model model) {
-        Optional<DetailedRoomDto> roomOpt = roomService.getDetailedRoomById(id);
-        if (roomOpt.isEmpty()) {
-            return "redirect:/room/list";
-        }
-        model.addAttribute("room", roomOpt.get());
-        model.addAttribute("roomTypes", RoomType.values());
-        return "room/roomUpdateForm";
-    }
-
-    //funkar inte riktigt
-    @PostMapping("/update/{id}")
-    public String updateRoomSubmit(@PathVariable Long id,
-                                   @Valid @ModelAttribute("room") DetailedRoomDto roomDto,
-                                   BindingResult bindingResult,
-                                   Model model,
-                                   RedirectAttributes redirectAttributes) {
-
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("roomTypes", RoomType.values());
-            return "room/roomUpdateForm";
-        }
-
-        String message = roomService.updateRoom(id, roomDto);
-
-        if (message.contains("cannot be updated") || message.contains("not found") || message.contains("must")) {
-            model.addAttribute("roomTypes", RoomType.values());
-            model.addAttribute("errorMessage", message);
-            return "room/roomUpdateForm";
-        }
-
-        redirectAttributes.addFlashAttribute("updateMessage", message); // visa lyckat meddelande i roomList
-        return "redirect:/room/list";
-    }
-
-    //RestController för update!!, ta inte bort än förrän controller varianten är klar
-    //@PutMapping("room/{id}/update")
-    //public String updateRoom(@PathVariable Long id, @RequestBody DetailedRoomDto roomDto) { //ingen @Valid behövs
-      //  log.info("Update room with id: {}", id);
-        //return roomService.updateRoom(id, roomDto);
-    //}
-
-    //funkar
     @GetMapping("/search")
     public String showSearchForm() {
         return "room/roomSearch";
     }
 
-    //funkar
     @GetMapping(value = "/search", params = {"checkIn", "checkOut", "guests"})
     public String searchAvailableRooms(@RequestParam("checkIn") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkIn,
                                        @RequestParam("checkOut") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkOut,
