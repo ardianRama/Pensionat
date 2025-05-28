@@ -39,5 +39,5 @@ public class DetailedBookingDto {
     @NotNull(message = "Room is required")
     private RoomDto room;
 
-    private RoomType type;
+    //private RoomType type;
 }
