@@ -23,6 +23,11 @@ public class CustomerController {
 
     private final CustomerService customerService;
 
+    @GetMapping("/start")
+    public String showStart(){
+        return "start-page";
+    }
+
     @GetMapping("/list")
     public String getAllCustomers(Model model) {
         log.info("Get all customers");
