@@ -46,7 +46,7 @@ public class CustomerController {
         model.addAttribute("customer", optionalCustomer.get());
         return "customer/customerDetails";
     }
-
+    // hej
     @GetMapping("/{id}/delete")
     public String deleteCustomer(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         boolean customerDeleted = customerService.deleteCustomer(id);

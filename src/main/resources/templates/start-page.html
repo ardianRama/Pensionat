@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pensionat</title>
+</head>
+<body>
+
+<div class="container">
+    <div class="d-grid gap-2">
+        <a th:href="@{/customer/add}" >Lägg till ny kund</a>
+    </div>
+    <div class="d-grid gap-2">
+        <a th:href="@{/room/list}" >Visa alla rum</a>
+    </div>
+    <div class="d-grid gap-2">
+        <a th:href="@{/booking/list}" >Visa alla bokningar</a>
+    </div>
+
+</div>
+
+</body>
+</html>
